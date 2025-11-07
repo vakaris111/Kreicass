@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kontaktai | MB Kreicas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+    <header class="topbar">
+        <div class="container nav-container">
+            <a class="logo" href="index.html">MB Kreicas</a>
+            <button class="nav-toggle" aria-label="Atidaryti meniu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <nav class="main-nav">
+                <a href="index.html">Pradžia</a>
+                <a href="cars.html">Automobiliai</a>
+                <a href="about.html">Apie mus</a>
+                <a href="contact.html" class="active">Kontaktai</a>
+                <a href="admin.html" class="admin-link">Admin</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="page-hero">
+            <div class="container">
+                <h1>Susisiekite su MB Kreicas</h1>
+                <p>Esame pasirengę atsakyti į visus klausimus ir pateikti individualų pasiūlymą.</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container contact-grid">
+                <div class="contact-card">
+                    <h2>Susisiekimo būdai</h2>
+                    <p>Skambinkite ar rašykite ir susitarsime dėl apžiūros Jums patogiu metu.</p>
+                    <ul class="contact-list">
+                        <li>
+                            <span>Telefonas</span>
+                            <a href="tel:+37060012345">+370 600 12345</a>
+                        </li>
+                        <li>
+                            <span>El. paštas</span>
+                            <a href="mailto:info@mbkreicas.lt">info@mbkreicas.lt</a>
+                        </li>
+                        <li>
+                            <span>Adresas</span>
+                            Ukmergės g. 222, Vilnius
+                        </li>
+                        <li>
+                            <span>Darbo laikas</span>
+                            I–V 9:00–18:00, VI pagal susitarimą
+                        </li>
+                    </ul>
+                </div>
+                <div class="contact-card">
+                    <h2>Greita žinutė</h2>
+                    <p>
+                        Siųskite mums „WhatsApp“ ar SMS – atsakysime tą pačią dieną ir pateiksime papildomų nuotraukų bei
+                        vaizdo įrašų.
+                    </p>
+                    <a class="btn primary" href="https://wa.me/37060012345" target="_blank" rel="noopener">Rašyti per WhatsApp</a>
+                    <p class="contact-note">Taip pat galite rašyti per „Messenger“ ar el. paštą – atsakome operatyviai.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section section--alt">
+            <div class="container map-card">
+                <h2>Kur mus rasti</h2>
+                <p>Salonas įsikūręs patogioje vietoje prie Ukmergės gatvės – iš anksto sutarkime atvykimo laiką.</p>
+                <div class="map-placeholder" role="img" aria-label="Žemėlapio vietos laikiklis">Žemėlapis bus netrukus</div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-content">
+            <div>
+                <a class="logo" href="index.html">MB Kreicas</a>
+                <p class="footer-text">Premium automobilių atranka ir pardavimas.</p>
+            </div>
+            <div>
+                <p class="footer-text">Telefonas: <a href="tel:+37060012345">+370 600 12345</a></p>
+                <p class="footer-text">El. paštas: <a href="mailto:info@mbkreicas.lt">info@mbkreicas.lt</a></p>
+                <p class="footer-text">Adresas: Ukmergės g. 222, Vilnius</p>
+            </div>
+            <div class="footer-bottom">
+                <p>© <span id="year"></span> MB Kreicas. Visos teisės saugomos.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/util.js"></script>
+    <script src="assets/js/nav.js"></script>
+    <script src="assets/js/contact.js"></script>
+</body>
+</html>

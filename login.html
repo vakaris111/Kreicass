@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Administratoriaus prisijungimas – MB Kreicas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body class="auth-page">
+    <main class="auth">
+        <div class="auth__card">
+            <a class="logo" href="index.html">MB Kreicas</a>
+            <h1>Administratoriaus prisijungimas</h1>
+            <p class="auth__intro">Įveskite administratoriaus slaptažodį, kad galėtumėte tvarkyti automobilių katalogą.</p>
+            <form id="loginForm" class="auth__form" autocomplete="off">
+                <label for="adminPassword">Slaptažodis</label>
+                <input type="password" id="adminPassword" name="adminPassword" autocomplete="current-password" placeholder="Įveskite slaptažodį" required />
+                <p class="form-hint">Numatytasis slaptažodis: <code>MBKreicas2024!</code>. Rekomenduojama jį pasikeisti prisijungus.</p>
+                <button type="submit" class="btn primary">Prisijungti</button>
+                <p id="loginMessage" class="form-error" role="alert" hidden></p>
+            </form>
+            <p class="auth__note">Slaptažodis ir prisijungimo būsena saugomi tik šiame įrenginyje. Norėdami apriboti prieigą iš kitų įrenginių, paskelbkite šį puslapį tik saugiu kanalu.</p>
+        </div>
+    </main>
+
+    <script src="assets/js/util.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/login.js"></script>
+</body>
+</html>

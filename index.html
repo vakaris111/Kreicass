@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MB Kreicas | Premium automobiliai</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+    <header class="topbar">
+        <div class="container nav-container">
+            <a class="logo" href="index.html">MB Kreicas</a>
+            <button class="nav-toggle" aria-label="Atidaryti meniu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <nav class="main-nav">
+                <a href="index.html" class="active">Pradžia</a>
+                <a href="cars.html">Automobiliai</a>
+                <a href="about.html">Apie mus</a>
+                <a href="contact.html">Kontaktai</a>
+                <a href="admin.html" class="admin-link">Admin</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container hero-content">
+                <div class="hero-copy">
+                    <p class="eyebrow">MB Kreicas</p>
+                    <h1>Rūpestingai atrinkti automobiliai be tarpininkų</h1>
+                    <p>
+                        Kiekvieną automobilį parduodame patys – su pilna istorija, realia rida ir pasiruošusį apžiūrai.
+                        Jokių paslėptų mokesčių ar sudėtingų procesų, tik skaidrus bendravimas ir asmeniškas dėmesys.
+                    </p>
+                    <div class="hero-actions">
+                        <a class="btn primary" href="cars.html">Peržiūrėti automobilius</a>
+                        <a class="btn secondary" href="contact.html">Susisiekti tiesiogiai</a>
+                    </div>
+                </div>
+                <div class="hero-card">
+                    <p class="hero-card__title">Mūsų pažadai</p>
+                    <ul>
+                        <li>Autentiškos nuotraukos ir aprašymai</li>
+                        <li>Patikrinta kilmė bei techninė būklė</li>
+                        <li>Lankstus apžiūros ir bandomojo važiavimo laikas</li>
+                        <li>Pagalba su dokumentais ir registracija</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="featured">
+            <div class="container section-header">
+                <div>
+                    <h2>Išskirtiniai pasiūlymai</h2>
+                    <p>Riboto pasiūlymo automobiliai pasirengę kelionei su Jumis jau šiandien.</p>
+                </div>
+                <a class="link-more" href="cars.html">Visi automobiliai</a>
+            </div>
+            <div class="container cars-grid" id="featuredCars" aria-live="polite"></div>
+        </section>
+
+        <section class="section section--alt">
+            <div class="container highlight">
+                <div>
+                    <h2>Automobilis, kurį galite pažinti iš anksto</h2>
+                    <p>
+                        Paruošiame detalias nuotraukas, vaizdo skambučio apžiūrą ir realius dokumentus dar prieš atvykstant.
+                        Viskas tam, kad sprendimas pirkti būtų ramus ir gerai apgalvotas.
+                    </p>
+                </div>
+                <div class="stats">
+                    <div class="stat">
+                        <span class="stat__value">30+</span>
+                        <span class="stat__label">Nuotraukų kiekvienam automobiliui</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat__value">3 žingsniai</span>
+                        <span class="stat__label">Nuo užklausos iki sutarties</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat__value">1 sav.</span>
+                        <span class="stat__label">Vidutinis automobilio paruošimo terminas</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="services">
+            <div class="container section-header">
+                <div>
+                    <h2>Kaip dirbame</h2>
+                    <p>Visas procesas – vienoje vietoje, kad automobilis pasiektų Jus greitai ir skaidriai.</p>
+                </div>
+            </div>
+            <div class="container services-grid">
+                <article class="service-card">
+                    <h3>Automobilio atranka</h3>
+                    <p>Pasirenkame tik techniškai tvarkingus automobilius su pilna aptarnavimo istorija ir realia rida.</p>
+                </article>
+                <article class="service-card">
+                    <h3>Detali patikra</h3>
+                    <p>Atliekame diagnostiką, pateikiame nuotraukų ir vaizdo reportažą, o apžiūros metu viską aprodome gyvai.</p>
+                </article>
+                <article class="service-card">
+                    <h3>Dokumentų sutvarkymas</h3>
+                    <p>Paruošiame pirkimo–pardavimo dokumentus, registracijos formalumus ir padedame pasiruošti kelionei.</p>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-content">
+            <div>
+                <a class="logo" href="index.html">MB Kreicas</a>
+                <p class="footer-text">Premium automobilių atranka ir pardavimas.</p>
+            </div>
+            <div>
+                <p class="footer-text">Telefonas: <a href="tel:+37060012345">+370 600 12345</a></p>
+                <p class="footer-text">El. paštas: <a href="mailto:info@mbkreicas.lt">info@mbkreicas.lt</a></p>
+                <p class="footer-text">Adresas: Ukmergės g. 222, Vilnius</p>
+            </div>
+            <div class="footer-bottom">
+                <p>© <span id="year"></span> MB Kreicas. Visos teisės saugomos.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/util.js"></script>
+    <script src="assets/js/nav.js"></script>
+    <script src="assets/js/dataService.js"></script>
+    <script src="assets/js/home.js"></script>
+</body>
+</html>
