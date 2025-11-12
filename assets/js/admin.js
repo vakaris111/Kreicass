@@ -15,12 +15,27 @@ document.addEventListener('DOMContentLoaded', async () => {
     const passwordForm = document.getElementById('passwordForm');
     const passwordMessage = document.getElementById('passwordMessage');
     const logoutBtn = document.getElementById('logoutBtn');
+    const syncForm = document.getElementById('syncForm');
+    const syncEnabledInput = document.getElementById('syncEnabled');
+    const syncOwnerInput = document.getElementById('syncOwner');
+    const syncRepoInput = document.getElementById('syncRepo');
+    const syncBranchInput = document.getElementById('syncBranch');
+    const syncPathInput = document.getElementById('syncPath');
+    const syncTokenInput = document.getElementById('syncToken');
+    const syncCommitInput = document.getElementById('syncCommitMessage');
+    const syncAuthorNameInput = document.getElementById('syncAuthorName');
+    const syncAuthorEmailInput = document.getElementById('syncAuthorEmail');
+    const syncMessage = document.getElementById('syncMessage');
+    const syncStatusText = document.getElementById('syncStatusText');
+    const syncNowBtn = document.getElementById('syncNow');
+    const syncTestBtn = document.getElementById('syncTest');
 
     if (!form || !listEl || !window.CarData) return;
 
     let cars = [];
     let editingSlug = null;
     let uploadedImages = [];
+    let cachedTokenPlaceholder = '';
 
     const escapeHtml = (value = '') =>
         String(value).replace(/[&<>"]|'/g, (char) =>
@@ -109,6 +124,59 @@ document.addEventListener('DOMContentLoaded', async () => {
     const loadCars = async () => {
         cars = await window.CarData.getCars();
         renderList();
+    };
+
+    const remoteSyncAvailable = typeof window.RemoteSync !== 'undefined';
+
+    const showSyncMessage = (text, isError = true) => {
+        if (!syncMessage) return;
+        syncMessage.textContent = text;
+        syncMessage.hidden = !text;
+        syncMessage.classList.toggle('form-error', isError);
+        syncMessage.classList.toggle('form-success', !isError);
+    };
+
+    const updateSyncStatusText = (config) => {
+        if (!syncStatusText) return;
+        if (!config || !config.enabled) {
+            syncStatusText.textContent = 'Nuotolinė sinchronizacija išjungta. Pakeitimai bus saugomi tik šiame įrenginyje.';
+            return;
+        }
+        const owner = config.owner || '…';
+        const repo = config.repo || '…';
+        const branch = config.branch || 'main';
+        syncStatusText.textContent = `Sinchronizuojama su https://github.com/${owner}/${repo} (${branch}).`;
+    };
+
+    const refreshSyncButtons = (config) => {
+        const isActive = !!(config && config.enabled);
+        if (syncNowBtn) syncNowBtn.disabled = !isActive;
+        if (syncTestBtn) syncTestBtn.disabled = !isActive;
+    };
+
+    const populateSyncForm = () => {
+        if (!remoteSyncAvailable || !syncForm) return;
+        const config = window.RemoteSync.getConfig();
+        if (syncEnabledInput) syncEnabledInput.checked = !!config.enabled;
+        if (syncOwnerInput) syncOwnerInput.value = config.owner || '';
+        if (syncRepoInput) syncRepoInput.value = config.repo || '';
+        if (syncBranchInput) syncBranchInput.value = config.branch || '';
+        if (syncPathInput) syncPathInput.value = config.path || '';
+        if (syncCommitInput) syncCommitInput.value = config.commitMessage || '';
+        if (syncAuthorNameInput) syncAuthorNameInput.value = config.authorName || '';
+        if (syncAuthorEmailInput) syncAuthorEmailInput.value = config.authorEmail || '';
+        if (syncTokenInput) {
+            syncTokenInput.value = '';
+            cachedTokenPlaceholder = config.token ? 'Raktas išsaugotas šiame įrenginyje' : '';
+            syncTokenInput.placeholder = cachedTokenPlaceholder || 'ghp_...';
+        }
+        updateSyncStatusText(config);
+        refreshSyncButtons(config);
+    };
+
+    const handleRemoteError = (event) => {
+        const message = event?.detail?.error?.message || 'Nepavyko atlikti nuotolinės sinchronizacijos.';
+        showSyncMessage(message, true);
     };
 
     const showPasswordMessage = (text, isError = true) => {
@@ -242,11 +310,17 @@ document.addEventListener('DOMContentLoaded', async () => {
             vin,
         };
 
-        await window.CarData.upsertCar(car);
-        await loadCars();
-        resetForm();
-        submitBtn.disabled = false;
-        alert('Automobilis išsaugotas!');
+        try {
+            await window.CarData.upsertCar(car);
+            await loadCars();
+            resetForm();
+            alert('Automobilis išsaugotas!');
+        } catch (error) {
+            console.error('Nepavyko išsaugoti automobilio:', error);
+            alert(error?.message || 'Nepavyko išsaugoti automobilio.');
+        } finally {
+            submitBtn.disabled = false;
+        }
     });
 
     if (uploadInput) {
@@ -275,7 +349,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             try {
                 const data = JSON.parse(e.target.result);
                 if (!Array.isArray(data)) throw new Error('Neteisingas failo formatas.');
-                window.CarData.saveCars(data);
+                await window.CarData.saveCars(data);
                 await loadCars();
                 alert('Automobiliai sėkmingai importuoti.');
             } catch (error) {
@@ -324,6 +398,89 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     window.addEventListener('cars:updated', loadCars);
+
+    if (remoteSyncAvailable) {
+        populateSyncForm();
+        window.addEventListener('remote-sync:error', handleRemoteError);
+        window.addEventListener('remote-sync:push-success', () => {
+            showSyncMessage('Duomenys išsaugoti GitHub saugykloje.', false);
+        });
+        window.addEventListener('remote-sync:pull-success', () => {
+            showSyncMessage('Duomenys atnaujinti iš GitHub.', false);
+        });
+        window.addEventListener('cars:sync-error', handleRemoteError);
+    }
+
+    if (remoteSyncAvailable && syncForm) {
+        syncForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            showSyncMessage('');
+
+            const currentConfig = window.RemoteSync.getConfig();
+            const nextConfig = {
+                ...currentConfig,
+                enabled: syncEnabledInput?.checked || false,
+                owner: (syncOwnerInput?.value || '').trim(),
+                repo: (syncRepoInput?.value || '').trim(),
+                branch: (syncBranchInput?.value || '').trim() || 'main',
+                path: (syncPathInput?.value || '').trim() || 'assets/data/cars.json',
+                commitMessage: (syncCommitInput?.value || '').trim() || 'Atnaujinti automobilių sąrašą',
+                authorName: (syncAuthorNameInput?.value || '').trim(),
+                authorEmail: (syncAuthorEmailInput?.value || '').trim(),
+            };
+
+            const tokenValue = (syncTokenInput?.value || '').trim();
+            if (tokenValue) {
+                nextConfig.token = tokenValue;
+            } else if (!currentConfig.token) {
+                nextConfig.token = '';
+            }
+
+            window.RemoteSync.saveConfig(nextConfig);
+            populateSyncForm();
+
+            if (nextConfig.enabled) {
+                try {
+                    await window.CarData.syncFromRemote();
+                    showSyncMessage('Nustatymai išsaugoti. Duomenys sinchronizuoti iš GitHub.', false);
+                } catch (error) {
+                    showSyncMessage(error?.message || 'Nustatymai išsaugoti, bet nepavyko nuskaityti duomenų iš GitHub.', true);
+                }
+            } else {
+                showSyncMessage('Nuotolinė sinchronizacija išjungta.', false);
+            }
+
+            if (syncTokenInput) {
+                syncTokenInput.value = '';
+                syncTokenInput.placeholder = cachedTokenPlaceholder || 'ghp_...';
+            }
+        });
+
+        if (syncNowBtn) {
+            syncNowBtn.addEventListener('click', async () => {
+                showSyncMessage('');
+                try {
+                    await window.CarData.syncFromRemote();
+                    await loadCars();
+                    showSyncMessage('Automobilių sąrašas atnaujintas iš GitHub.', false);
+                } catch (error) {
+                    showSyncMessage(error?.message || 'Nepavyko gauti duomenų iš GitHub.', true);
+                }
+            });
+        }
+
+        if (syncTestBtn) {
+            syncTestBtn.addEventListener('click', async () => {
+                showSyncMessage('Tikrinamas ryšys...', false);
+                try {
+                    await window.RemoteSync.testConnection();
+                    showSyncMessage('Ryšys su GitHub sėkmingai užmegztas.', false);
+                } catch (error) {
+                    showSyncMessage(error?.message || 'Nepavyko prisijungti prie GitHub.', true);
+                }
+            });
+        }
+    }
 
     renderUploadedImages();
     loadCars();

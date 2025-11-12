@@ -87,8 +87,34 @@
         window.dispatchEvent(new CustomEvent('cars:updated'));
     };
 
-    const ensureData = async () => {
-        if (cache) return cache;
+    const tryFetchRemote = async () => {
+        if (!window.RemoteSync || !window.RemoteSync.isEnabled()) return null;
+        try {
+            const remoteCars = await window.RemoteSync.fetchCars();
+            if (!Array.isArray(remoteCars)) return null;
+            const normalized = normalizeCars(remoteCars);
+            cache = normalized;
+            dataSource = 'remote';
+            writeToStorage(normalized);
+            return normalized;
+        } catch (error) {
+            console.warn('Nepavyko gauti duomenų iš nuotolinės saugyklos:', error);
+            return null;
+        }
+    };
+
+    const ensureData = async ({ forceRemote = false } = {}) => {
+        if (!forceRemote && cache) return cache;
+
+        if (forceRemote) {
+            cache = null;
+        }
+
+        if (window.RemoteSync && window.RemoteSync.isEnabled()) {
+            const remote = await tryFetchRemote();
+            if (remote) return remote;
+        }
+
         const stored = readFromStorage();
         if (stored) {
             const normalized = normalizeCars(stored);
@@ -99,6 +125,7 @@
             }
             return normalized;
         }
+
         const defaults = await fetchDefaults();
         const normalizedDefaults = normalizeCars(defaults);
         cache = normalizedDefaults;
@@ -107,10 +134,7 @@
         return normalizedDefaults;
     };
 
-    const getCars = async () => {
-        const cars = await ensureData();
-        return cars;
-    };
+    const getCars = async () => ensureData();
 
     const matchBySlug = (cars, slug) => {
         if (!slug) return null;
@@ -176,15 +200,28 @@
         return `auto-${Date.now()}`;
     };
 
-    const saveCars = (cars) => {
+    const persistRemotely = async (cars) => {
+        if (!window.RemoteSync || !window.RemoteSync.isEnabled()) return null;
+        try {
+            await window.RemoteSync.pushCars(cars);
+        } catch (error) {
+            console.warn('Nuotolinės sinchronizacijos klaida:', error);
+            window.dispatchEvent(new CustomEvent('cars:sync-error', { detail: { error } }));
+        }
+    };
+
+    const saveCars = async (cars, { skipRemote = false } = {}) => {
         cache = cars;
         dataSource = 'storage';
         writeToStorage(cars);
         notify();
+        if (!skipRemote) {
+            await persistRemotely(cars);
+        }
         return cars;
     };
 
-    const upsertCar = (car) => {
+    const upsertCar = async (car) => {
         if (!car.slug) {
             car.slug = generateSlug(car.title || car.name || `auto-${Date.now()}`);
         }
@@ -197,22 +234,28 @@
         }
         const normalized = normalizeCars(cars);
         const targetIndex = index >= 0 ? index : normalized.length - 1;
-        saveCars(normalized);
+        await saveCars(normalized);
         return normalized[targetIndex];
     };
 
-    const deleteCar = (slug) => {
+    const deleteCar = async (slug) => {
         if (!cache) return;
         const filtered = cache.filter((item) => item.slug !== slug && String(item.id) !== String(slug));
-        saveCars(filtered);
+        await saveCars(filtered);
     };
 
     const resetCars = async () => {
         const defaults = await fetchDefaults();
         const normalizedDefaults = normalizeCars(defaults);
-        saveCars(normalizedDefaults);
+        await saveCars(normalizedDefaults);
         dataSource = 'defaults';
         return normalizedDefaults;
+    };
+
+    const syncFromRemote = async () => {
+        const data = await ensureData({ forceRemote: true });
+        notify();
+        return data;
     };
 
     window.CarData = {
@@ -224,5 +267,6 @@
         deleteCar,
         resetCars,
         generateSlug,
+        syncFromRemote,
     };
 })();
