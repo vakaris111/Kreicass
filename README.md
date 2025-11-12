@@ -21,8 +21,9 @@ Vieno puslapio (SPA stiliaus) svetainių rinkinys, sukurtas pristatyti naudotus 
    - Eksportuoti / importuoti JSON failą visam automobilių sąrašui.
    - Atstatyti numatytą sąrašą, įkeliant `assets/data/cars.json` duomenis.
    - Pakeisti administratoriaus slaptažodį (saugomas localStorage) arba atsijungti.
+   - Įjungti GitHub sinchronizaciją, kad automobiliai automatiškai atsirastų visuose įrenginiuose.
 
-> Pastaba: localStorage veikia kiekviename įrenginyje atskirai. Norėdami pasidalinti pakeitimais, eksportuokite JSON failą ir importuokite jį kitame įrenginyje. Slaptažodžio pakeitimai taip pat galioja tik tam įrenginiui.
+> Pastaba: nuotolinės sinchronizacijos numatytieji nustatymai saugomi faile `assets/data/sync-config.json`. Šis failas (be prieigos rakto) platinamas kartu su svetaine, todėl visi įrenginiai žino, kur ieškoti bendro `cars.json`. Administratorius gali vietoje įvesti ribotų teisių GitHub PAT, kuris saugomas tik tame įrenginyje. Slaptažodžio pakeitimai taip pat galioja tik tam įrenginiui.
 
 ## Pritaikymas mobiliesiems
 Svetainė kurta „mobile-first“ principu, naudojant šiuolaikinius CSS (flex/grid) sprendimus ir animuotas sąsajas.

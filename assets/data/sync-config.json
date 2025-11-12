@@ -1,0 +1,11 @@
+{
+  "enabled": true,
+  "provider": "github",
+  "owner": "Kreicass",
+  "repo": "Kreicass",
+  "branch": "main",
+  "path": "assets/data/cars.json",
+  "commitMessage": "Atnaujinti automobilių sąrašą",
+  "authorName": "MB Kreicas",
+  "authorEmail": "info@mbkreicas.lt"
+}

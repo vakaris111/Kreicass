@@ -1,6 +1,7 @@
 (function () {
     const CONFIG_KEY = 'mbk_remote_sync_v1';
     const STATE_KEY = 'mbk_remote_sync_state_v1';
+    const BOOTSTRAP_CONFIG_URL = 'assets/data/sync-config.json';
     const DEFAULT_CONFIG = {
         enabled: false,
         provider: 'github',
@@ -61,6 +62,65 @@
         }
     };
 
+    const sanitizeBootstrapConfig = (rawConfig) => {
+        if (!rawConfig || typeof rawConfig !== 'object') {
+            return null;
+        }
+
+        const sanitized = {
+            provider: 'github',
+        };
+
+        if (typeof rawConfig.enabled === 'boolean') {
+            sanitized.enabled = rawConfig.enabled;
+        }
+
+        if (typeof rawConfig.owner === 'string') {
+            sanitized.owner = rawConfig.owner.trim();
+        }
+
+        if (typeof rawConfig.repo === 'string') {
+            sanitized.repo = rawConfig.repo.trim();
+        }
+
+        if (typeof rawConfig.branch === 'string') {
+            const trimmed = rawConfig.branch.trim();
+            if (trimmed) {
+                sanitized.branch = trimmed;
+            }
+        }
+
+        if (typeof rawConfig.path === 'string') {
+            const trimmed = rawConfig.path.trim();
+            if (trimmed) {
+                sanitized.path = trimmed.replace(/^\/+/, '');
+            }
+        }
+
+        if (typeof rawConfig.commitMessage === 'string') {
+            const trimmed = rawConfig.commitMessage.trim();
+            if (trimmed) {
+                sanitized.commitMessage = trimmed;
+            }
+        }
+
+        if (typeof rawConfig.authorName === 'string') {
+            const trimmed = rawConfig.authorName.trim();
+            if (trimmed) {
+                sanitized.authorName = trimmed;
+            }
+        }
+
+        if (typeof rawConfig.authorEmail === 'string') {
+            const trimmed = rawConfig.authorEmail.trim();
+            if (trimmed) {
+                sanitized.authorEmail = trimmed;
+            }
+        }
+
+        return sanitized;
+    };
+
     const getConfig = () => ({ ...DEFAULT_CONFIG, ...(readStorage(CONFIG_KEY) || {}) });
 
     const setConfig = (config) => {
@@ -90,6 +150,66 @@
             clone.token = '***';
         }
         return clone;
+    };
+
+    let bootstrapPromise = null;
+
+    const applyBootstrapConfig = (bootstrapConfig) => {
+        if (!bootstrapConfig) {
+            return getConfig();
+        }
+
+        const currentConfig = getConfig();
+        const mergedConfig = {
+            ...currentConfig,
+            ...bootstrapConfig,
+        };
+
+        if (currentConfig.token && !bootstrapConfig.token) {
+            mergedConfig.token = currentConfig.token;
+        }
+
+        const currentComparable = JSON.stringify(omitSensitive(currentConfig));
+        const mergedComparable = JSON.stringify(omitSensitive(mergedConfig));
+
+        if (currentComparable !== mergedComparable) {
+            return setConfig(mergedConfig);
+        }
+
+        return currentConfig;
+    };
+
+    const fetchBootstrapConfig = async () => {
+        if (!isBrowser) {
+            return getConfig();
+        }
+
+        try {
+            const response = await fetch(BOOTSTRAP_CONFIG_URL, {
+                cache: 'no-store',
+            });
+
+            if (!response.ok) {
+                if (response.status === 404) {
+                    return getConfig();
+                }
+                throw new Error(`Nepavyko nuskaityti sync-config.json (${response.status}).`);
+            }
+
+            const json = await response.json();
+            const sanitized = sanitizeBootstrapConfig(json);
+            return applyBootstrapConfig(sanitized);
+        } catch (error) {
+            console.warn('Nepavyko pritaikyti nuotolinės sinchronizacijos nustatymų:', error);
+            return getConfig();
+        }
+    };
+
+    const ensureBootstrapConfig = () => {
+        if (!bootstrapPromise) {
+            bootstrapPromise = fetchBootstrapConfig();
+        }
+        return bootstrapPromise;
     };
 
     const isEnabled = () => {
@@ -266,5 +386,7 @@
         fetchCars,
         pushCars,
         testConnection,
+        whenReady: ensureBootstrapConfig,
     };
+    ensureBootstrapConfig();
 })();

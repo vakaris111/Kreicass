@@ -108,6 +108,14 @@
     };
 
     const ensureData = async ({ forceRemote = false } = {}) => {
+        if (window.RemoteSync && typeof window.RemoteSync.whenReady === 'function') {
+            try {
+                await window.RemoteSync.whenReady();
+            } catch (error) {
+                console.warn('Nepavyko paruošti nuotolinės sinchronizacijos:', error);
+            }
+        }
+
         if (!forceRemote && cache) return cache;
 
         if (forceRemote) {

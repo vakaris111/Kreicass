@@ -154,8 +154,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (syncTestBtn) syncTestBtn.disabled = !isActive;
     };
 
-    const populateSyncForm = () => {
+    const populateSyncForm = async () => {
         if (!remoteSyncAvailable || !syncForm) return;
+
+        if (typeof window.RemoteSync.whenReady === 'function') {
+            try {
+                await window.RemoteSync.whenReady();
+            } catch (error) {
+                console.warn('Nepavyko užkrauti nuotolinės sinchronizacijos nustatymų:', error);
+            }
+        }
+
         const config = window.RemoteSync.getConfig();
         if (syncEnabledInput) syncEnabledInput.checked = !!config.enabled;
         if (syncOwnerInput) syncOwnerInput.value = config.owner || '';
@@ -400,7 +409,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     window.addEventListener('cars:updated', loadCars);
 
     if (remoteSyncAvailable) {
-        populateSyncForm();
+        await populateSyncForm();
         window.addEventListener('remote-sync:error', handleRemoteError);
         window.addEventListener('remote-sync:push-success', () => {
             showSyncMessage('Duomenys išsaugoti GitHub saugykloje.', false);
@@ -415,6 +424,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         syncForm.addEventListener('submit', async (event) => {
             event.preventDefault();
             showSyncMessage('');
+
+            if (typeof window.RemoteSync.whenReady === 'function') {
+                try {
+                    await window.RemoteSync.whenReady();
+                } catch (error) {
+                    console.warn('Nepavyko paruošti nuotolinės sinchronizacijos nustatymų:', error);
+                }
+            }
 
             const currentConfig = window.RemoteSync.getConfig();
             const nextConfig = {
@@ -437,7 +454,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             window.RemoteSync.saveConfig(nextConfig);
-            populateSyncForm();
+            await populateSyncForm();
 
             if (nextConfig.enabled) {
                 try {
@@ -460,6 +477,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             syncNowBtn.addEventListener('click', async () => {
                 showSyncMessage('');
                 try {
+                    if (typeof window.RemoteSync.whenReady === 'function') {
+                        await window.RemoteSync.whenReady();
+                    }
                     await window.CarData.syncFromRemote();
                     await loadCars();
                     showSyncMessage('Automobilių sąrašas atnaujintas iš GitHub.', false);
@@ -473,6 +493,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             syncTestBtn.addEventListener('click', async () => {
                 showSyncMessage('Tikrinamas ryšys...', false);
                 try {
+                    if (typeof window.RemoteSync.whenReady === 'function') {
+                        await window.RemoteSync.whenReady();
+                    }
                     await window.RemoteSync.testConnection();
                     showSyncMessage('Ryšys su GitHub sėkmingai užmegztas.', false);
                 } catch (error) {
