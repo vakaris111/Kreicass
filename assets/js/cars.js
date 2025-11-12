@@ -12,6 +12,7 @@ const renderCarCard = (car) => {
                         <span>${car.mileage.toLocaleString('lt-LT')} km</span>
                         <span>${car.fuel}</span>
                         <span>${car.transmission}</span>
+                        ${car.wheelDiameter ? `<span>${car.wheelDiameter}</span>` : ''}
                         ${car.drivetrain ? `<span>${car.drivetrain}</span>` : ''}
                     </div>
                 </div>

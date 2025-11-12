@@ -237,6 +237,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         form.querySelector('#carFuel').value = car.fuel;
         form.querySelector('#carTransmission').value = car.transmission;
         form.querySelector('#carDrivetrain').value = car.drivetrain || '';
+        form.querySelector('#carWheelDiameter').value = car.wheelDiameter || '';
         form.querySelector('#carPower').value = car.power || '';
         form.querySelector('#carBody').value = car.body || '';
         form.querySelector('#carColor').value = car.color || '';
@@ -283,6 +284,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const fuel = form.querySelector('#carFuel').value.trim();
         const transmission = form.querySelector('#carTransmission').value.trim();
         const drivetrain = form.querySelector('#carDrivetrain').value.trim();
+        const wheelDiameter = form.querySelector('#carWheelDiameter').value.trim();
         const power = Number(form.querySelector('#carPower').value) || null;
         const body = form.querySelector('#carBody').value.trim();
         const color = form.querySelector('#carColor').value.trim();
@@ -310,6 +312,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             fuel,
             transmission,
             drivetrain,
+            wheelDiameter,
             power,
             body,
             color,

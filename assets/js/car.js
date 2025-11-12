@@ -11,15 +11,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     const mainImageButton = document.getElementById('mainImageButton');
     const thumbs = document.getElementById('galleryThumbs');
     const galleryModal = document.getElementById('galleryModal');
-    const lightboxImage = document.getElementById('lightboxImage');
-    const lightboxStrip = document.getElementById('lightboxStrip');
-    const lightboxPrev = document.getElementById('lightboxPrev');
-    const lightboxNext = document.getElementById('lightboxNext');
+    const lightboxScroller = document.getElementById('lightboxScroller');
 
     let activeIndex = 0;
     let lightboxIndex = 0;
     let lastFocus = null;
     const pointerCache = new Map();
+    let currentZoomImage = null;
     const zoomState = {
         scale: 1,
         originScale: 1,
@@ -32,10 +30,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     const MAX_SCALE = 4;
 
     const applyZoom = () => {
-        if (!lightboxImage) return;
+        if (!currentZoomImage) return;
         const { scale, translateX, translateY } = zoomState;
-        lightboxImage.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
-        lightboxImage.classList.toggle('is-zoomed', scale > 1.01);
+        currentZoomImage.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+        currentZoomImage.classList.toggle('is-zoomed', scale > 1.01);
     };
 
     const resetZoom = () => {
@@ -45,7 +43,23 @@ document.addEventListener('DOMContentLoaded', async () => {
         zoomState.translateY = 0;
         pinchStartDistance = 0;
         panStart = { x: 0, y: 0 };
-        applyZoom();
+        if (currentZoomImage) {
+            currentZoomImage.style.transform = '';
+            currentZoomImage.classList.remove('is-zoomed');
+        }
+    };
+
+    const setActiveZoomTarget = (img) => {
+        if (currentZoomImage === img) return;
+        const previous = currentZoomImage;
+        if (previous && previous !== img) {
+            previous.style.transform = '';
+            previous.classList.remove('is-zoomed');
+        }
+        pointerCache.clear();
+        currentZoomImage = img;
+        resetZoom();
+        lastTapTime = 0;
     };
 
     const distanceBetweenPointers = () => {
@@ -108,26 +122,148 @@ document.addEventListener('DOMContentLoaded', async () => {
         const setLightboxImage = (index) => {
             const safeIndex = Math.max(0, Math.min(index, gallery.length - 1));
             lightboxIndex = safeIndex;
-            if (lightboxImage) {
-                pointerCache.clear();
-                resetZoom();
-                lightboxImage.src = gallery[safeIndex];
-                lightboxImage.alt = `${car.title} nuotrauka ${safeIndex + 1}`;
-            }
+            const items = lightboxScroller ? Array.from(lightboxScroller.querySelectorAll('[data-index]')) : [];
+            items.forEach((item) => {
+                const isActive = Number(item.dataset.index) === safeIndex;
+                item.classList.toggle('active', isActive);
+                if (isActive) {
+                    const img = item.querySelector('img');
+                    if (img) {
+                        setActiveZoomTarget(img);
+                        img.alt = `${car.title} nuotrauka ${safeIndex + 1}`;
+                    }
+                }
+            });
             updateMainImage(safeIndex);
         };
 
-        const buildLightboxStrip = () => {
-            if (!lightboxStrip) return;
-            lightboxStrip.innerHTML = gallery
+        const scrollToLightboxIndex = (index, { instant = false } = {}) => {
+            if (!lightboxScroller) return;
+            const target = lightboxScroller.querySelector(`[data-index="${index}"]`);
+            if (!target) return;
+            target.scrollIntoView({ block: 'center', behavior: instant ? 'auto' : 'smooth' });
+        };
+
+        const attachZoomHandlers = (img) => {
+            img.addEventListener('load', () => {
+                if (currentZoomImage === img && zoomState.scale <= 1.01) {
+                    resetZoom();
+                }
+            });
+
+            img.addEventListener('pointerdown', (event) => {
+                setActiveZoomTarget(img);
+                img.setPointerCapture(event.pointerId);
+                pointerCache.set(event.pointerId, { x: event.clientX, y: event.clientY });
+                if (event.pointerType === 'touch') {
+                    event.preventDefault();
+                    const now = Date.now();
+                    if (now - lastTapTime < 280 && pointerCache.size === 1) {
+                        if (zoomState.scale > 1.01) {
+                            resetZoom();
+                        } else {
+                            zoomState.scale = 2;
+                            zoomState.originScale = 2;
+                            zoomState.translateX = 0;
+                            zoomState.translateY = 0;
+                            applyZoom();
+                        }
+                    }
+                    lastTapTime = now;
+                }
+                if (pointerCache.size === 2) {
+                    pinchStartDistance = distanceBetweenPointers();
+                    zoomState.originScale = zoomState.scale;
+                } else if (pointerCache.size === 1) {
+                    panStart = { x: event.clientX - zoomState.translateX, y: event.clientY - zoomState.translateY };
+                }
+            });
+
+            img.addEventListener('pointermove', (event) => {
+                if (!pointerCache.has(event.pointerId) || currentZoomImage !== img) return;
+                pointerCache.set(event.pointerId, { x: event.clientX, y: event.clientY });
+                if (pointerCache.size === 2) {
+                    const distance = distanceBetweenPointers();
+                    if (pinchStartDistance) {
+                        const scale = Math.max(1, Math.min(MAX_SCALE, zoomState.originScale * (distance / pinchStartDistance)));
+                        zoomState.scale = scale;
+                        if (scale === 1) {
+                            zoomState.translateX = 0;
+                            zoomState.translateY = 0;
+                        }
+                        applyZoom();
+                    }
+                } else if (zoomState.scale > 1) {
+                    const point = pointerCache.get(event.pointerId);
+                    if (point) {
+                        zoomState.translateX = point.x - panStart.x;
+                        zoomState.translateY = point.y - panStart.y;
+                        applyZoom();
+                    }
+                }
+            });
+
+            ['pointerup', 'pointercancel', 'pointerleave', 'pointerout'].forEach((type) => {
+                img.addEventListener(type, (event) => {
+                    if (currentZoomImage !== img) return;
+                    handlePointerEnd(event);
+                });
+            });
+
+            img.addEventListener(
+                'wheel',
+                (event) => {
+                    if (currentZoomImage !== img) return;
+                    if (!event.ctrlKey && !event.metaKey) {
+                        return;
+                    }
+                    event.preventDefault();
+                    const factor = event.deltaY < 0 ? 1.15 : 0.85;
+                    const scale = Math.max(1, Math.min(MAX_SCALE, zoomState.scale * factor));
+                    zoomState.scale = scale;
+                    if (scale === 1) {
+                        zoomState.translateX = 0;
+                        zoomState.translateY = 0;
+                    }
+                    applyZoom();
+                },
+                { passive: false }
+            );
+
+            img.addEventListener('dblclick', (event) => {
+                if (currentZoomImage !== img) return;
+                event.preventDefault();
+                if (zoomState.scale > 1.01) {
+                    resetZoom();
+                } else {
+                    zoomState.scale = 2;
+                    zoomState.originScale = 2;
+                    zoomState.translateX = 0;
+                    zoomState.translateY = 0;
+                    applyZoom();
+                }
+            });
+        };
+
+        const buildLightboxScroller = () => {
+            if (!lightboxScroller) return;
+            lightboxScroller.innerHTML = gallery
                 .map(
                     (src, index) => `
-                        <button type="button" data-index="${index}" class="${index === lightboxIndex ? 'active' : ''}">
-                            <img src="${src}" alt="${car.title} miniatiūra ${index + 1}" loading="lazy" />
-                        </button>
+                        <figure class="lightbox__item" data-index="${index}">
+                            <img src="${src}" alt="${car.title} nuotrauka ${index + 1}" loading="lazy" />
+                        </figure>
                     `
                 )
                 .join('');
+
+            Array.from(lightboxScroller.querySelectorAll('img')).forEach((img, index) => {
+                img.addEventListener('click', () => {
+                    setLightboxImage(index);
+                    scrollToLightboxIndex(index);
+                });
+                attachZoomHandlers(img);
+            });
         };
 
         const openLightbox = (index = 0) => {
@@ -139,8 +275,17 @@ document.addEventListener('DOMContentLoaded', async () => {
             pointerCache.clear();
             resetZoom();
             lastTapTime = 0;
+            buildLightboxScroller();
+            const hint = galleryModal.querySelector('.lightbox__hint');
+            if (hint) {
+                if (gallery.length > 1) {
+                    hint.removeAttribute('hidden');
+                } else {
+                    hint.setAttribute('hidden', '');
+                }
+            }
             setLightboxImage(index);
-            buildLightboxStrip();
+            scrollToLightboxIndex(index, { instant: true });
         };
 
         const closeLightbox = () => {
@@ -160,7 +305,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (!gallery || !gallery.length) return;
             const nextIndex = (lightboxIndex + direction + gallery.length) % gallery.length;
             setLightboxImage(nextIndex);
-            buildLightboxStrip();
+            scrollToLightboxIndex(nextIndex);
         };
 
         const maxPreview = 5;
@@ -197,122 +342,39 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
         }
 
-        if (lightboxImage) {
-            resetZoom();
-            lightboxImage.addEventListener('load', () => {
-                if (zoomState.scale <= 1.01) {
-                    resetZoom();
-                }
-            });
-
-            lightboxImage.addEventListener('pointerdown', (event) => {
-                lightboxImage.setPointerCapture(event.pointerId);
-                pointerCache.set(event.pointerId, { x: event.clientX, y: event.clientY });
-                if (event.pointerType === 'touch') {
-                    event.preventDefault();
-                    const now = Date.now();
-                    if (now - lastTapTime < 280 && pointerCache.size === 1) {
-                        if (zoomState.scale > 1.01) {
-                            resetZoom();
-                        } else {
-                            zoomState.scale = 2;
-                            zoomState.originScale = 2;
-                            zoomState.translateX = 0;
-                            zoomState.translateY = 0;
-                            applyZoom();
-                        }
-                    }
-                    lastTapTime = now;
-                }
-                if (pointerCache.size === 2) {
-                    pinchStartDistance = distanceBetweenPointers();
-                    zoomState.originScale = zoomState.scale;
-                } else if (pointerCache.size === 1) {
-                    panStart = { x: event.clientX - zoomState.translateX, y: event.clientY - zoomState.translateY };
-                }
-            });
-
-            lightboxImage.addEventListener('pointermove', (event) => {
-                if (!pointerCache.has(event.pointerId)) return;
-                pointerCache.set(event.pointerId, { x: event.clientX, y: event.clientY });
-                if (pointerCache.size === 2) {
-                    const distance = distanceBetweenPointers();
-                    if (pinchStartDistance) {
-                        const scale = Math.max(1, Math.min(MAX_SCALE, zoomState.originScale * (distance / pinchStartDistance)));
-                        zoomState.scale = scale;
-                        if (scale === 1) {
-                            zoomState.translateX = 0;
-                            zoomState.translateY = 0;
-                        }
-                        applyZoom();
-                    }
-                } else if (zoomState.scale > 1) {
-                    const point = pointerCache.get(event.pointerId);
-                    if (point) {
-                        zoomState.translateX = point.x - panStart.x;
-                        zoomState.translateY = point.y - panStart.y;
-                        applyZoom();
-                    }
-                }
-            });
-
-            ['pointerup', 'pointercancel', 'pointerleave', 'pointerout'].forEach((type) => {
-                lightboxImage.addEventListener(type, handlePointerEnd);
-            });
-
-            lightboxImage.addEventListener(
-                'wheel',
-                (event) => {
-                    event.preventDefault();
-                    const factor = event.deltaY < 0 ? 1.15 : 0.85;
-                    const scale = Math.max(1, Math.min(MAX_SCALE, zoomState.scale * factor));
-                    zoomState.scale = scale;
-                    if (scale === 1) {
-                        zoomState.translateX = 0;
-                        zoomState.translateY = 0;
-                    }
-                    applyZoom();
-                },
-                { passive: false }
-            );
-
-            lightboxImage.addEventListener('dblclick', (event) => {
-                event.preventDefault();
-                if (zoomState.scale > 1.01) {
-                    resetZoom();
-                } else {
-                    zoomState.scale = 2;
-                    zoomState.originScale = 2;
-                    zoomState.translateX = 0;
-                    zoomState.translateY = 0;
-                    applyZoom();
-                }
-            });
-        }
-
         updateMainImage(0);
 
         if (mainImageButton) {
             mainImageButton.addEventListener('click', () => openLightbox(activeIndex));
         }
 
-        if (lightboxStrip) {
-            lightboxStrip.addEventListener('click', (event) => {
-                const target = event.target.closest('button[data-index]');
-                if (!target) return;
-                const index = Number(target.dataset.index);
-                setLightboxImage(index);
-                buildLightboxStrip();
-                updateMainImage(index);
+        let scrollRaf = null;
+        if (lightboxScroller) {
+            lightboxScroller.addEventListener('scroll', () => {
+                if (scrollRaf) {
+                    cancelAnimationFrame(scrollRaf);
+                }
+                scrollRaf = requestAnimationFrame(() => {
+                    const items = Array.from(lightboxScroller.querySelectorAll('[data-index]'));
+                    if (!items.length) return;
+                    const { top, height } = lightboxScroller.getBoundingClientRect();
+                    const center = top + height / 2;
+                    let closestIndex = lightboxIndex;
+                    let closestDistance = Infinity;
+                    items.forEach((item) => {
+                        const rect = item.getBoundingClientRect();
+                        const itemCenter = rect.top + rect.height / 2;
+                        const distance = Math.abs(itemCenter - center);
+                        if (distance < closestDistance) {
+                            closestDistance = distance;
+                            closestIndex = Number(item.dataset.index);
+                        }
+                    });
+                    if (closestIndex !== lightboxIndex) {
+                        setLightboxImage(closestIndex);
+                    }
+                });
             });
-        }
-
-        if (lightboxPrev) {
-            lightboxPrev.addEventListener('click', () => navigateLightbox(-1));
-        }
-
-        if (lightboxNext) {
-            lightboxNext.addEventListener('click', () => navigateLightbox(1));
         }
 
         if (galleryModal) {
@@ -329,11 +391,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (event.key === 'Escape') {
                 closeLightbox();
             }
-            if (event.key === 'ArrowRight') {
+            if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
                 event.preventDefault();
                 navigateLightbox(1);
             }
-            if (event.key === 'ArrowLeft') {
+            if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
                 event.preventDefault();
                 navigateLightbox(-1);
             }
@@ -346,6 +408,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             { label: 'Kuras', value: car.fuel },
             { label: 'Pavarų dėžė', value: car.transmission },
             { label: 'Varantieji ratai', value: car.drivetrain || 'Nenurodyta' },
+            { label: 'Ratlankių skersmuo', value: car.wheelDiameter || 'Nenurodyta' },
             { label: 'Galia', value: car.power ? `${car.power} kW` : 'Nenurodyta' },
             { label: 'Kėbulas', value: car.body || 'Nenurodyta' },
             { label: 'Spalva', value: car.color || 'Nenurodyta' },
