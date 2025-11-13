@@ -1,7 +1,6 @@
 (function () {
     const STORAGE_KEY = 'mbk_cars_v1';
     let cache = null;
-    let dataSource = null;
 
     const fetchDefaults = async () => {
         const response = await fetch('assets/data/cars.json');
@@ -38,6 +37,11 @@
             normalized.title = normalized.name;
         }
 
+        if (!normalized.sdk && normalized.vin) {
+            normalized.sdk = normalized.vin;
+            delete normalized.vin;
+        }
+
         const fallbackSource = normalized.title || normalized.name || normalized.id || `auto-${Date.now()}`;
         let slugCandidate = normalized.slug;
         if (!slugCandidate || slugCandidate === 'undefined' || slugCandidate === 'null') {
@@ -54,10 +58,35 @@
             normalized.gallery = [];
         }
 
+        if (!Array.isArray(normalized.features)) {
+            normalized.features = [];
+        }
+
+        if (typeof normalized.price === 'string') {
+            const parsed = Number(normalized.price.replace(/[^0-9.-]/g, ''));
+            if (!Number.isNaN(parsed)) {
+                normalized.price = parsed;
+            }
+        }
+
+        if (typeof normalized.mileage === 'string') {
+            const parsed = Number(normalized.mileage.replace(/[^0-9.-]/g, ''));
+            if (!Number.isNaN(parsed)) {
+                normalized.mileage = parsed;
+            }
+        }
+
+        if (typeof normalized.year === 'string') {
+            const parsed = Number(normalized.year.replace(/[^0-9.-]/g, ''));
+            if (!Number.isNaN(parsed)) {
+                normalized.year = parsed;
+            }
+        }
+
         return normalized;
     };
 
-    const normalizeCars = (cars) => {
+    const normalizeCars = (cars = []) => {
         const existingSlugs = new Set();
         return cars.map((car) => normalizeCar(car, existingSlugs));
     };
@@ -87,30 +116,38 @@
         window.dispatchEvent(new CustomEvent('cars:updated'));
     };
 
-    const ensureData = async () => {
-        if (cache) return cache;
+    const loadFromStorage = () => {
         const stored = readFromStorage();
-        if (stored) {
-            const normalized = normalizeCars(stored);
-            cache = normalized;
-            dataSource = 'storage';
-            if (JSON.stringify(normalized) !== JSON.stringify(stored)) {
-                writeToStorage(normalized);
-            }
-            return normalized;
+        if (!stored) return null;
+        const normalized = normalizeCars(stored);
+        if (JSON.stringify(normalized) !== JSON.stringify(stored)) {
+            writeToStorage(normalized);
         }
-        const defaults = await fetchDefaults();
-        const normalizedDefaults = normalizeCars(defaults);
-        cache = normalizedDefaults;
-        dataSource = 'defaults';
-        writeToStorage(normalizedDefaults);
-        return normalizedDefaults;
+        return normalized;
     };
 
-    const getCars = async () => {
-        const cars = await ensureData();
-        return cars;
+    const ensureData = async () => {
+        if (cache) return cache;
+
+        const stored = loadFromStorage();
+        if (Array.isArray(stored)) {
+            cache = stored;
+            return stored;
+        }
+
+        try {
+            const defaults = normalizeCars(await fetchDefaults());
+            cache = defaults;
+            writeToStorage(defaults);
+            return defaults;
+        } catch (error) {
+            console.error('Nepavyko įkelti numatytų automobilių:', error);
+            cache = [];
+            return [];
+        }
     };
+
+    const getCars = async () => ensureData();
 
     const matchBySlug = (cars, slug) => {
         if (!slug) return null;
@@ -118,7 +155,7 @@
         try {
             normalizedSlug = decodeURIComponent(normalizedSlug);
         } catch (error) {
-            // ignore decode issues and fall back to raw slug
+            // ignoruoti dekodavimo klaidas
         }
         normalizedSlug = normalizedSlug.trim();
         return (
@@ -133,23 +170,16 @@
         let found = matchBySlug(cars, slug);
         if (found) return found;
 
-        if (dataSource !== 'defaults') {
-            try {
-                const defaults = normalizeCars(await fetchDefaults());
-                cache = defaults;
-                dataSource = 'defaults';
-                writeToStorage(defaults);
-                notify();
-                found = matchBySlug(defaults, slug);
-                if (found) {
-                    return found;
-                }
-            } catch (error) {
-                console.warn('Nepavyko atkurti numatytų automobilių:', error);
-            }
+        try {
+            const defaults = normalizeCars(await fetchDefaults());
+            cache = defaults;
+            writeToStorage(defaults);
+            notify();
+            return matchBySlug(defaults, slug);
+        } catch (error) {
+            console.warn('Nepavyko rasti automobilio tarp numatytųjų duomenų:', error);
+            return null;
         }
-
-        return null;
     };
 
     const createId = () => {
@@ -161,7 +191,6 @@
                 }
                 if (cryptoObj && typeof cryptoObj.getRandomValues === 'function') {
                     const bytes = cryptoObj.getRandomValues(new Uint8Array(16));
-                    // RFC4122 v4 UUID variant & version bits
                     bytes[6] = (bytes[6] & 0x0f) | 0x40;
                     bytes[8] = (bytes[8] & 0x3f) | 0x80;
                     const hex = Array.from(bytes, (b) => b.toString(16).padStart(2, '0'));
@@ -176,43 +205,44 @@
         return `auto-${Date.now()}`;
     };
 
-    const saveCars = (cars) => {
-        cache = cars;
-        dataSource = 'storage';
-        writeToStorage(cars);
+    const saveCars = async (cars) => {
+        const normalized = normalizeCars(cars);
+        cache = normalized;
+        writeToStorage(normalized);
         notify();
-        return cars;
+        return normalized;
     };
 
-    const upsertCar = (car) => {
-        if (!car.slug) {
-            car.slug = generateSlug(car.title || car.name || `auto-${Date.now()}`);
-        }
+    const upsertCar = async (car) => {
+        await ensureData();
         const cars = cache ? [...cache] : [];
         const index = cars.findIndex((item) => item.slug === car.slug || item.id === car.id);
+        const baseCar = { ...car };
+        if (!baseCar.slug) {
+            baseCar.slug = generateSlug(baseCar.title || baseCar.name || `auto-${Date.now()}`);
+        }
         if (index >= 0) {
-            cars[index] = { ...cars[index], ...car };
+            cars[index] = { ...cars[index], ...baseCar };
         } else {
-            cars.push({ id: createId(), ...car });
+            cars.push({ id: createId(), ...baseCar });
         }
         const normalized = normalizeCars(cars);
         const targetIndex = index >= 0 ? index : normalized.length - 1;
-        saveCars(normalized);
+        await saveCars(normalized);
         return normalized[targetIndex];
     };
 
-    const deleteCar = (slug) => {
+    const deleteCar = async (slug) => {
+        await ensureData();
         if (!cache) return;
         const filtered = cache.filter((item) => item.slug !== slug && String(item.id) !== String(slug));
-        saveCars(filtered);
+        await saveCars(filtered);
     };
 
     const resetCars = async () => {
-        const defaults = await fetchDefaults();
-        const normalizedDefaults = normalizeCars(defaults);
-        saveCars(normalizedDefaults);
-        dataSource = 'defaults';
-        return normalizedDefaults;
+        const defaults = normalizeCars(await fetchDefaults());
+        await saveCars(defaults);
+        return defaults;
     };
 
     window.CarData = {

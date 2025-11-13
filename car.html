@@ -63,15 +63,9 @@
             <div class="lightbox__inner" role="dialog" aria-modal="true" aria-label="Automobilio nuotraukų galerija">
                 <button class="lightbox__close" type="button" data-close aria-label="Uždaryti galeriją">&times;</button>
                 <div class="lightbox__main">
-                    <button class="lightbox__nav lightbox__nav--prev" type="button" id="lightboxPrev" aria-label="Ankstesnė nuotrauka">
-                        <span aria-hidden="true">‹</span>
-                    </button>
-                    <img id="lightboxImage" src="" alt="Automobilio nuotrauka dideliame lange" />
-                    <button class="lightbox__nav lightbox__nav--next" type="button" id="lightboxNext" aria-label="Kita nuotrauka">
-                        <span aria-hidden="true">›</span>
-                    </button>
+                    <p class="lightbox__hint">Slinkite aukštyn arba žemyn, kad peržiūrėtumėte kitas nuotraukas.</p>
+                    <div class="lightbox__scroller" id="lightboxScroller"></div>
                 </div>
-                <div class="lightbox__strip" id="lightboxStrip"></div>
             </div>
         </div>
     </main>
