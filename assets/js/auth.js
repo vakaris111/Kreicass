@@ -1,7 +1,7 @@
 (function () {
     const SESSION_KEY = 'mbk_admin_session';
     const PASSWORD_KEY = 'mbk_admin_password';
-    const DEFAULT_PASSWORD = 'labas123labas';
+    const DEFAULT_PASSWORD = 'MBKreicas2024!';
 
     const getStoredPassword = () => localStorage.getItem(PASSWORD_KEY) || DEFAULT_PASSWORD;
 

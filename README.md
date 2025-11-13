@@ -22,7 +22,7 @@ Vieno puslapio (SPA stiliaus) svetainių rinkinys, sukurtas pristatyti naudotus 
    - Atstatyti numatytą sąrašą, įkeliant `assets/data/cars.json` duomenis.
    - Pakeisti administratoriaus slaptažodį (saugomas localStorage) arba atsijungti.
 
-> Pastaba: localStorage veikia kiekviename įrenginyje atskirai. Norėdami pasidalinti pakeitimais, eksportuokite JSON failą ir importuokite jį kitame įrenginyje. Slaptažodžio pakeitimai taip pat galioja tik tam įrenginiui.
+> Pastaba: visi pakeitimai (įskaitant nuotraukas ir slaptažodį) saugomi tik tame įrenginyje, kuriame atliekamas redagavimas. Norėdami pasidalinti automobilių sąrašu su kitais įrenginiais, eksportuokite JSON ir importuokite jį kituose įrenginiuose.
 
 ## Pritaikymas mobiliesiems
 Svetainė kurta „mobile-first“ principu, naudojant šiuolaikinius CSS (flex/grid) sprendimus ir animuotas sąsajas.
