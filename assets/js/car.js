@@ -141,7 +141,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (!lightboxScroller) return;
             const target = lightboxScroller.querySelector(`[data-index="${index}"]`);
             if (!target) return;
-            target.scrollIntoView({ block: 'center', behavior: instant ? 'auto' : 'smooth' });
+            target.scrollIntoView({
+                block: 'center',
+                inline: 'nearest',
+                behavior: instant ? 'auto' : 'smooth',
+            });
         };
 
         const attachZoomHandlers = (img) => {
@@ -153,12 +157,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             img.addEventListener('pointerdown', (event) => {
                 setActiveZoomTarget(img);
-                img.setPointerCapture(event.pointerId);
                 pointerCache.set(event.pointerId, { x: event.clientX, y: event.clientY });
-                if (event.pointerType === 'touch') {
-                    event.preventDefault();
-                    const now = Date.now();
+                const isTouch = event.pointerType === 'touch';
+                const now = Date.now();
+
+                if (isTouch) {
                     if (now - lastTapTime < 280 && pointerCache.size === 1) {
+                        event.preventDefault();
                         if (zoomState.scale > 1.01) {
                             resetZoom();
                         } else {
@@ -171,10 +176,16 @@ document.addEventListener('DOMContentLoaded', async () => {
                     }
                     lastTapTime = now;
                 }
+
                 if (pointerCache.size === 2) {
+                    event.preventDefault();
+                    img.setPointerCapture(event.pointerId);
                     pinchStartDistance = distanceBetweenPointers();
                     zoomState.originScale = zoomState.scale;
-                } else if (pointerCache.size === 1) {
+                } else {
+                    if (zoomState.scale > 1.01) {
+                        img.setPointerCapture(event.pointerId);
+                    }
                     panStart = { x: event.clientX - zoomState.translateX, y: event.clientY - zoomState.translateY };
                 }
             });
