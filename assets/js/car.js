@@ -423,7 +423,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             { label: 'Galia', value: car.power ? `${car.power} kW` : 'Nenurodyta' },
             { label: 'Kėbulas', value: car.body || 'Nenurodyta' },
             { label: 'Spalva', value: car.color || 'Nenurodyta' },
-            { label: 'VIN', value: car.vin || 'Pateikiama apžiūros metu' },
+            { label: 'SDK', value: car.sdk || car.vin || 'Pateikiama apžiūros metu' },
         ];
 
         if (specsEl) {

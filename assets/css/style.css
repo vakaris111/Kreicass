@@ -567,15 +567,6 @@ img {
     gap: 1.25rem;
 }
 
-.admin-card--sync {
-    display: grid;
-    gap: 1rem;
-}
-
-.admin-card--sync .form-hint {
-    margin-top: -0.35rem;
-}
-
 .form-note {
     margin: 0;
     color: var(--text-muted);
@@ -1109,16 +1100,16 @@ img {
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    gap: clamp(1rem, 4vw, 1.5rem);
+    gap: clamp(0.35rem, 2vw, 0.75rem);
     align-items: center;
     scroll-snap-type: y mandatory;
     overscroll-behavior: contain;
-    padding: 0 clamp(0.25rem, 2vw, 0.75rem);
+    padding: 0 clamp(0.15rem, 2vw, 0.5rem);
 }
 
 .lightbox__item {
     width: 100%;
-    min-height: calc(100vh - clamp(4.5rem, 10vh, 6rem));
+    min-height: calc(100vh - clamp(3.25rem, 8vh, 4.75rem));
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1128,7 +1119,7 @@ img {
 .lightbox__item img {
     width: 100%;
     max-width: min(1100px, 95vw);
-    max-height: calc(100vh - clamp(6rem, 12vh, 8rem));
+    max-height: calc(100vh - clamp(4.5rem, 10vh, 5.75rem));
     object-fit: contain;
     border-radius: clamp(0.75rem, 3vw, 1.25rem);
     background: rgba(10, 14, 24, 0.6);
@@ -1185,11 +1176,11 @@ img {
     }
 
     .lightbox__item {
-        min-height: calc(100vh - 5rem);
+        min-height: calc(100vh - 4rem);
     }
 
     .lightbox__item img {
-        max-height: calc(100vh - 5.5rem);
+        max-height: calc(100vh - 4.5rem);
         border-radius: 0.85rem;
     }
 }
@@ -1388,10 +1379,6 @@ img {
 
     .car-details {
         grid-template-columns: 3fr 2fr;
-    }
-
-    .admin-card--sync {
-        grid-column: 1 / -1;
     }
 
     .form-grid {

@@ -1,7 +1,6 @@
 (function () {
     const STORAGE_KEY = 'mbk_cars_v1';
     let cache = null;
-    let dataSource = null;
 
     const fetchDefaults = async () => {
         const response = await fetch('assets/data/cars.json');
@@ -38,6 +37,11 @@
             normalized.title = normalized.name;
         }
 
+        if (!normalized.sdk && normalized.vin) {
+            normalized.sdk = normalized.vin;
+            delete normalized.vin;
+        }
+
         const fallbackSource = normalized.title || normalized.name || normalized.id || `auto-${Date.now()}`;
         let slugCandidate = normalized.slug;
         if (!slugCandidate || slugCandidate === 'undefined' || slugCandidate === 'null') {
@@ -54,10 +58,35 @@
             normalized.gallery = [];
         }
 
+        if (!Array.isArray(normalized.features)) {
+            normalized.features = [];
+        }
+
+        if (typeof normalized.price === 'string') {
+            const parsed = Number(normalized.price.replace(/[^0-9.-]/g, ''));
+            if (!Number.isNaN(parsed)) {
+                normalized.price = parsed;
+            }
+        }
+
+        if (typeof normalized.mileage === 'string') {
+            const parsed = Number(normalized.mileage.replace(/[^0-9.-]/g, ''));
+            if (!Number.isNaN(parsed)) {
+                normalized.mileage = parsed;
+            }
+        }
+
+        if (typeof normalized.year === 'string') {
+            const parsed = Number(normalized.year.replace(/[^0-9.-]/g, ''));
+            if (!Number.isNaN(parsed)) {
+                normalized.year = parsed;
+            }
+        }
+
         return normalized;
     };
 
-    const normalizeCars = (cars) => {
+    const normalizeCars = (cars = []) => {
         const existingSlugs = new Set();
         return cars.map((car) => normalizeCar(car, existingSlugs));
     };
@@ -87,77 +116,35 @@
         window.dispatchEvent(new CustomEvent('cars:updated'));
     };
 
-    const tryFetchRemote = async ({ existingCars = null } = {}) => {
-        if (!window.RemoteSync || !window.RemoteSync.isEnabled()) return null;
-        try {
-            const remoteCars = await window.RemoteSync.fetchCars();
-            if (!Array.isArray(remoteCars)) return null;
-            const normalized = normalizeCars(remoteCars);
-            if (!normalized.length && existingCars && existingCars.length) {
-                console.warn('Nuotolinė saugykla grąžino tuščią sąrašą. Paliekami esami duomenys.');
-                return null;
-            }
-            cache = normalized;
-            dataSource = 'remote';
+    const loadFromStorage = () => {
+        const stored = readFromStorage();
+        if (!stored) return null;
+        const normalized = normalizeCars(stored);
+        if (JSON.stringify(normalized) !== JSON.stringify(stored)) {
             writeToStorage(normalized);
-            return normalized;
-        } catch (error) {
-            console.warn('Nepavyko gauti duomenų iš nuotolinės saugyklos:', error);
-            return null;
         }
+        return normalized;
     };
 
-    const ensureData = async ({ forceRemote = false } = {}) => {
-        if (window.RemoteSync && typeof window.RemoteSync.whenReady === 'function') {
-            try {
-                await window.RemoteSync.whenReady();
-            } catch (error) {
-                console.warn('Nepavyko paruošti nuotolinės sinchronizacijos:', error);
-            }
+    const ensureData = async () => {
+        if (cache) return cache;
+
+        const stored = loadFromStorage();
+        if (Array.isArray(stored)) {
+            cache = stored;
+            return stored;
         }
 
-        if (!forceRemote && cache) return cache;
-
-        if (forceRemote) {
-            cache = null;
+        try {
+            const defaults = normalizeCars(await fetchDefaults());
+            cache = defaults;
+            writeToStorage(defaults);
+            return defaults;
+        } catch (error) {
+            console.error('Nepavyko įkelti numatytų automobilių:', error);
+            cache = [];
+            return [];
         }
-
-        const stored = readFromStorage();
-        const normalizedStored = stored ? normalizeCars(stored) : null;
-
-        if (!forceRemote && normalizedStored) {
-            cache = normalizedStored;
-            dataSource = 'storage';
-            if (JSON.stringify(normalizedStored) !== JSON.stringify(stored)) {
-                writeToStorage(normalizedStored);
-            }
-        }
-
-        if (window.RemoteSync && window.RemoteSync.isEnabled()) {
-            const existingCars = cache && cache.length ? cache : normalizedStored;
-            const remote = await tryFetchRemote({ existingCars });
-            if (remote) return remote;
-        }
-
-        if (!forceRemote && Array.isArray(cache)) {
-            return cache;
-        }
-
-        if (Array.isArray(normalizedStored)) {
-            cache = normalizedStored;
-            dataSource = 'storage';
-            if (JSON.stringify(normalizedStored) !== JSON.stringify(stored)) {
-                writeToStorage(normalizedStored);
-            }
-            return normalizedStored;
-        }
-
-        const defaults = await fetchDefaults();
-        const normalizedDefaults = normalizeCars(defaults);
-        cache = normalizedDefaults;
-        dataSource = 'defaults';
-        writeToStorage(normalizedDefaults);
-        return normalizedDefaults;
     };
 
     const getCars = async () => ensureData();
@@ -168,7 +155,7 @@
         try {
             normalizedSlug = decodeURIComponent(normalizedSlug);
         } catch (error) {
-            // ignore decode issues and fall back to raw slug
+            // ignoruoti dekodavimo klaidas
         }
         normalizedSlug = normalizedSlug.trim();
         return (
@@ -183,23 +170,16 @@
         let found = matchBySlug(cars, slug);
         if (found) return found;
 
-        if (dataSource !== 'defaults') {
-            try {
-                const defaults = normalizeCars(await fetchDefaults());
-                cache = defaults;
-                dataSource = 'defaults';
-                writeToStorage(defaults);
-                notify();
-                found = matchBySlug(defaults, slug);
-                if (found) {
-                    return found;
-                }
-            } catch (error) {
-                console.warn('Nepavyko atkurti numatytų automobilių:', error);
-            }
+        try {
+            const defaults = normalizeCars(await fetchDefaults());
+            cache = defaults;
+            writeToStorage(defaults);
+            notify();
+            return matchBySlug(defaults, slug);
+        } catch (error) {
+            console.warn('Nepavyko rasti automobilio tarp numatytųjų duomenų:', error);
+            return null;
         }
-
-        return null;
     };
 
     const createId = () => {
@@ -211,7 +191,6 @@
                 }
                 if (cryptoObj && typeof cryptoObj.getRandomValues === 'function') {
                     const bytes = cryptoObj.getRandomValues(new Uint8Array(16));
-                    // RFC4122 v4 UUID variant & version bits
                     bytes[6] = (bytes[6] & 0x0f) | 0x40;
                     bytes[8] = (bytes[8] & 0x3f) | 0x80;
                     const hex = Array.from(bytes, (b) => b.toString(16).padStart(2, '0'));
@@ -226,37 +205,26 @@
         return `auto-${Date.now()}`;
     };
 
-    const persistRemotely = async (cars) => {
-        if (!window.RemoteSync || !window.RemoteSync.isEnabled()) return null;
-        try {
-            await window.RemoteSync.pushCars(cars);
-        } catch (error) {
-            console.warn('Nuotolinės sinchronizacijos klaida:', error);
-            window.dispatchEvent(new CustomEvent('cars:sync-error', { detail: { error } }));
-        }
-    };
-
-    const saveCars = async (cars, { skipRemote = false } = {}) => {
-        cache = cars;
-        dataSource = 'storage';
-        writeToStorage(cars);
+    const saveCars = async (cars) => {
+        const normalized = normalizeCars(cars);
+        cache = normalized;
+        writeToStorage(normalized);
         notify();
-        if (!skipRemote) {
-            await persistRemotely(cars);
-        }
-        return cars;
+        return normalized;
     };
 
     const upsertCar = async (car) => {
-        if (!car.slug) {
-            car.slug = generateSlug(car.title || car.name || `auto-${Date.now()}`);
-        }
+        await ensureData();
         const cars = cache ? [...cache] : [];
         const index = cars.findIndex((item) => item.slug === car.slug || item.id === car.id);
+        const baseCar = { ...car };
+        if (!baseCar.slug) {
+            baseCar.slug = generateSlug(baseCar.title || baseCar.name || `auto-${Date.now()}`);
+        }
         if (index >= 0) {
-            cars[index] = { ...cars[index], ...car };
+            cars[index] = { ...cars[index], ...baseCar };
         } else {
-            cars.push({ id: createId(), ...car });
+            cars.push({ id: createId(), ...baseCar });
         }
         const normalized = normalizeCars(cars);
         const targetIndex = index >= 0 ? index : normalized.length - 1;
@@ -265,23 +233,16 @@
     };
 
     const deleteCar = async (slug) => {
+        await ensureData();
         if (!cache) return;
         const filtered = cache.filter((item) => item.slug !== slug && String(item.id) !== String(slug));
         await saveCars(filtered);
     };
 
     const resetCars = async () => {
-        const defaults = await fetchDefaults();
-        const normalizedDefaults = normalizeCars(defaults);
-        await saveCars(normalizedDefaults);
-        dataSource = 'defaults';
-        return normalizedDefaults;
-    };
-
-    const syncFromRemote = async () => {
-        const data = await ensureData({ forceRemote: true });
-        notify();
-        return data;
+        const defaults = normalizeCars(await fetchDefaults());
+        await saveCars(defaults);
+        return defaults;
     };
 
     window.CarData = {
@@ -293,6 +254,5 @@
         deleteCar,
         resetCars,
         generateSlug,
-        syncFromRemote,
     };
 })();

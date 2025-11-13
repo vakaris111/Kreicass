@@ -96,8 +96,8 @@
                         <input type="text" id="carGallery" name="carGallery" placeholder="https://..." />
                         <p class="form-hint">Palaikomos ir vietinės nuotraukos, ir viešos nuorodos.</p>
 
-                        <label for="carVin">VIN</label>
-                        <input type="text" id="carVin" name="carVin" placeholder="WDD..." />
+                        <label for="carSdk">SDK</label>
+                        <input type="text" id="carSdk" name="carSdk" placeholder="SDK..." />
 
                         <button type="submit" class="btn primary">Išsaugoti automobilį</button>
                         <p class="form-note">Automobiliai, įskaitant įkeltas nuotraukas, saugomi šio įrenginio naršyklėje (localStorage). Galite eksportuoti / importuoti duomenis žemiau.</p>
@@ -114,61 +114,6 @@
                         <button id="resetCars" class="btn ghost danger">Atstatyti į numatytą sąrašą</button>
                     </div>
                     <div id="adminList" class="admin-list" aria-live="polite"></div>
-                </div>
-                <div class="admin-card admin-card--sync">
-                    <h2>Nuotolinė sinchronizacija</h2>
-                    <p class="admin-card__intro">
-                        Įjunkite GitHub sinchronizaciją, kad pridėti ar redaguoti automobiliai iš karto matytųsi visuose įrenginiuose.
-                    </p>
-                    <p id="syncStatusText" class="form-note">Nuotolinė sinchronizacija išjungta. Pakeitimai saugomi tik šiame įrenginyje.</p>
-                    <form id="syncForm" class="admin-form admin-form--compact">
-                        <label class="form-toggle">
-                            <input type="checkbox" id="syncEnabled" />
-                            <span>Įjungti GitHub sinchronizaciją</span>
-                        </label>
-                        <div class="form-grid">
-                            <div>
-                                <label for="syncOwner">Savininkas arba organizacija</label>
-                                <input type="text" id="syncOwner" placeholder="pvz., Kreicass" />
-                            </div>
-                            <div>
-                                <label for="syncRepo">Repozitorija</label>
-                                <input type="text" id="syncRepo" placeholder="pvz., Kreicass" />
-                            </div>
-                        </div>
-                        <div class="form-grid">
-                            <div>
-                                <label for="syncBranch">Šaka</label>
-                                <input type="text" id="syncBranch" placeholder="main" />
-                            </div>
-                            <div>
-                                <label for="syncPath">JSON failo kelias</label>
-                                <input type="text" id="syncPath" placeholder="assets/data/cars.json" />
-                            </div>
-                        </div>
-                        <label for="syncCommitMessage">Commit žinutė</label>
-                        <input type="text" id="syncCommitMessage" placeholder="Atnaujinti automobilių sąrašą" />
-                        <div class="form-grid">
-                            <div>
-                                <label for="syncAuthorName">Commit autorius</label>
-                                <input type="text" id="syncAuthorName" placeholder="MB Kreicas" />
-                            </div>
-                            <div>
-                                <label for="syncAuthorEmail">Autoriaus el. paštas</label>
-                                <input type="email" id="syncAuthorEmail" placeholder="info@mbkreicas.lt" />
-                            </div>
-                        </div>
-                        <label for="syncToken">GitHub asmeninis prieigos raktas (PAT)</label>
-                        <input type="password" id="syncToken" autocomplete="off" placeholder="ghp_..." />
-                        <p class="form-hint">Raktas saugomas tik šiame įrenginyje ir naudojamas JSON failui atnaujinti.</p>
-                        <div class="admin-actions admin-actions--row">
-                            <button type="submit" class="btn ghost">Išsaugoti nustatymus</button>
-                            <button type="button" id="syncNow" class="btn ghost">Sinchronizuoti dabar</button>
-                            <button type="button" id="syncTest" class="btn ghost">Patikrinti ryšį</button>
-                        </div>
-                        <p id="syncMessage" class="form-error" role="status" hidden></p>
-                        <p class="form-note form-note--warning">Naudokite tik ribotų teisių GitHub PAT ir neskelbkite jo viešai.</p>
-                    </form>
                 </div>
                 <div class="admin-card admin-card--security">
                     <h2>Prisijungimo nustatymai</h2>
@@ -212,7 +157,6 @@
     <script src="assets/js/util.js"></script>
     <script src="assets/js/nav.js"></script>
     <script src="assets/js/auth.js"></script>
-    <script src="assets/js/remoteSync.js"></script>
     <script src="assets/js/dataService.js"></script>
     <script src="assets/js/admin.js"></script>
 </body>
