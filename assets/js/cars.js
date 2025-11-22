@@ -66,7 +66,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         const options = [`<option value="">Visi (${total})</option>`];
         values.forEach((value) => {
             const count = getCountWith(key, value);
-            options.push(`<option value="${value}">${formatValue(value, count)}</option>`);
+            if (count > 0) {
+                options.push(`<option value="${value}">${formatValue(value, count)}</option>`);
+            }
         });
         select.innerHTML = options.join('');
     };
@@ -133,11 +135,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         container.setAttribute('data-empty', 'Įkeliama...');
         cars = await window.CarData.getCars();
         const maxPrice = cars.reduce((max, car) => Math.max(max, Number(car.price) || 0), 0);
-        const minPrice = cars.reduce((min, car) => Math.min(min, Number(car.price) || 0), Infinity);
-        const start = Number.isFinite(minPrice) ? Math.max(5000, Math.floor(minPrice / 500) * 500) : 5000;
+        const start = 0;
         const end = Number.isFinite(maxPrice)
-            ? Math.max(start + 500, Math.ceil(maxPrice / 500) * 500 + 500)
-            : start + 5000;
+            ? Math.max(500, Math.ceil(maxPrice / 500) * 500 + 500)
+            : 5000;
         priceOptions = [];
         for (let value = start; value <= end; value += 500) {
             priceOptions.push(value);
