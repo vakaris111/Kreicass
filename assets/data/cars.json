@@ -32,7 +32,20 @@
       "https://source.unsplash.com/1600x1000/?mercedes,gle,gle-350d-2021&sig=5",
       "https://source.unsplash.com/1600x1000/?mercedes,gle,gle-350d-2021&sig=6",
       "https://source.unsplash.com/1600x1000/?mercedes,gle,gle-350d-2021&sig=7"
-    ]
+    ],
+    "make": "Mercedes-Benz",
+    "model": "GLE 350d",
+    "firstRegistration": "2021-06",
+    "engine": "2925 cm³, 272 AG (200 kW)",
+    "doors": "4/5",
+    "climateControl": "3 zonų klimato kontrolė",
+    "steering": "Kairėje",
+    "inspectionUntil": "2024-12",
+    "weight": "2350",
+    "seats": "5",
+    "registrationCountry": "Vokietija",
+    "sdk": "MBGLE350D",
+    "co2": "212 g/km"
   },
   {
     "id": "bmw-530d-2020",
@@ -67,7 +80,20 @@
       "https://source.unsplash.com/1600x1000/?bmw,sedan,bmw-530d-2020&sig=5",
       "https://source.unsplash.com/1600x1000/?bmw,sedan,bmw-530d-2020&sig=6",
       "https://source.unsplash.com/1600x1000/?bmw,sedan,bmw-530d-2020&sig=7"
-    ]
+    ],
+    "make": "BMW",
+    "model": "5 serija",
+    "firstRegistration": "2020-05",
+    "engine": "2993 cm³, 286 AG (210 kW)",
+    "doors": "4/5",
+    "climateControl": "Dviguba klimato kontrolė",
+    "steering": "Kairėje",
+    "inspectionUntil": "2025-04",
+    "weight": "1750",
+    "seats": "5",
+    "registrationCountry": "Vokietija",
+    "sdk": "BMW530D2020",
+    "co2": "161 g/km"
   },
   {
     "id": "audi-q7-2019",
@@ -102,7 +128,20 @@
       "https://source.unsplash.com/1600x1000/?audi,q7,audi-q7-2019&sig=5",
       "https://source.unsplash.com/1600x1000/?audi,q7,audi-q7-2019&sig=6",
       "https://source.unsplash.com/1600x1000/?audi,q7,audi-q7-2019&sig=7"
-    ]
+    ],
+    "make": "Audi",
+    "model": "Q7",
+    "firstRegistration": "2019-02",
+    "engine": "2967 cm³, 286 AG (210 kW)",
+    "doors": "4/5",
+    "climateControl": "4 zonų klimato kontrolė",
+    "steering": "Kairėje",
+    "inspectionUntil": "2024-10",
+    "weight": "2240",
+    "seats": "7",
+    "registrationCountry": "Vokietija",
+    "sdk": "AUDIQ72019",
+    "co2": "199 g/km"
   },
   {
     "id": "vw-tiguan-2018",
@@ -137,7 +176,20 @@
       "https://source.unsplash.com/1600x1000/?volkswagen,tiguan,vw-tiguan-2018&sig=5",
       "https://source.unsplash.com/1600x1000/?volkswagen,tiguan,vw-tiguan-2018&sig=6",
       "https://source.unsplash.com/1600x1000/?volkswagen,tiguan,vw-tiguan-2018&sig=7"
-    ]
+    ],
+    "make": "Volkswagen",
+    "model": "Tiguan",
+    "firstRegistration": "2018-09",
+    "engine": "1984 cm³, 190 AG (132 kW)",
+    "doors": "4/5",
+    "climateControl": "Dviejų zonų klimato kontrolė",
+    "steering": "Kairėje",
+    "inspectionUntil": "2024-05",
+    "weight": "1695",
+    "seats": "5",
+    "registrationCountry": "Lietuva",
+    "sdk": "VWTIG2018",
+    "co2": "149 g/km"
   },
   {
     "id": "toyota-rav4-2022",
@@ -172,7 +224,20 @@
       "https://source.unsplash.com/1600x1000/?toyota,rav4,toyota-rav4-2022&sig=5",
       "https://source.unsplash.com/1600x1000/?toyota,rav4,toyota-rav4-2022&sig=6",
       "https://source.unsplash.com/1600x1000/?toyota,rav4,toyota-rav4-2022&sig=7"
-    ]
+    ],
+    "make": "Toyota",
+    "model": "RAV4",
+    "firstRegistration": "2022-04",
+    "engine": "2487 cm³, 222 AG (163 kW)",
+    "doors": "4/5",
+    "climateControl": "Dviguba klimato kontrolė",
+    "steering": "Kairėje",
+    "inspectionUntil": "2026-03",
+    "weight": "1750",
+    "seats": "5",
+    "registrationCountry": "Lietuva",
+    "sdk": "RAV4H2022",
+    "co2": "132 g/km"
   },
   {
     "id": "volvo-xc60-2017",
@@ -207,7 +272,20 @@
       "https://source.unsplash.com/1600x1000/?volvo,xc60,volvo-xc60-2017&sig=5",
       "https://source.unsplash.com/1600x1000/?volvo,xc60,volvo-xc60-2017&sig=6",
       "https://source.unsplash.com/1600x1000/?volvo,xc60,volvo-xc60-2017&sig=7"
-    ]
+    ],
+    "make": "Volvo",
+    "model": "XC60",
+    "firstRegistration": "2017-07",
+    "engine": "1969 cm³, 235 AG (173 kW)",
+    "doors": "4/5",
+    "climateControl": "4 zonų klimato kontrolė",
+    "steering": "Kairėje",
+    "inspectionUntil": "2024-08",
+    "weight": "1900",
+    "seats": "5",
+    "registrationCountry": "Švedija",
+    "sdk": "VOLXC602017",
+    "co2": "154 g/km"
   },
   {
     "id": "kia-sportage-2023",
@@ -242,7 +320,20 @@
       "https://source.unsplash.com/1600x1000/?kia,sportage,kia-sportage-2023&sig=5",
       "https://source.unsplash.com/1600x1000/?kia,sportage,kia-sportage-2023&sig=6",
       "https://source.unsplash.com/1600x1000/?kia,sportage,kia-sportage-2023&sig=7"
-    ]
+    ],
+    "make": "Kia",
+    "model": "Sportage",
+    "firstRegistration": "2023-02",
+    "engine": "1598 cm³, 230 AG (169 kW)",
+    "doors": "4/5",
+    "climateControl": "Dviguba klimato kontrolė",
+    "steering": "Kairėje",
+    "inspectionUntil": "2026-02",
+    "weight": "1650",
+    "seats": "5",
+    "registrationCountry": "Lietuva",
+    "sdk": "KIASP23",
+    "co2": "132 g/km"
   },
   {
     "id": "ford-mondeo-2016",
@@ -277,7 +368,20 @@
       "https://source.unsplash.com/1600x1000/?ford,mondeo,ford-mondeo-2016&sig=5",
       "https://source.unsplash.com/1600x1000/?ford,mondeo,ford-mondeo-2016&sig=6",
       "https://source.unsplash.com/1600x1000/?ford,mondeo,ford-mondeo-2016&sig=7"
-    ]
+    ],
+    "make": "Ford",
+    "model": "Mondeo",
+    "firstRegistration": "2016-03",
+    "engine": "1997 cm³, 180 AG (132 kW)",
+    "doors": "4/5",
+    "climateControl": "Dviguba klimato kontrolė",
+    "steering": "Kairėje",
+    "inspectionUntil": "2024-05",
+    "weight": "1550",
+    "seats": "5",
+    "registrationCountry": "Lietuva",
+    "sdk": "FMON2016",
+    "co2": "124 g/km"
   },
   {
     "id": "honda-crv-2015",
@@ -312,7 +416,20 @@
       "https://source.unsplash.com/1600x1000/?car,honda-crv-2015&sig=5",
       "https://source.unsplash.com/1600x1000/?car,honda-crv-2015&sig=6",
       "https://source.unsplash.com/1600x1000/?car,honda-crv-2015&sig=7"
-    ]
+    ],
+    "make": "Honda",
+    "model": "CR-V",
+    "firstRegistration": "2015-06",
+    "engine": "2199 cm³, 160 AG (118 kW)",
+    "doors": "4/5",
+    "climateControl": "Automatinė klimato kontrolė",
+    "steering": "Kairėje",
+    "inspectionUntil": "2023-12",
+    "weight": "1655",
+    "seats": "5",
+    "registrationCountry": "Lietuva",
+    "sdk": "HNCRV2015",
+    "co2": "159 g/km"
   },
   {
     "id": "skoda-superb-2019",
@@ -347,7 +464,20 @@
       "https://source.unsplash.com/1600x1000/?car,skoda-superb-2019&sig=5",
       "https://source.unsplash.com/1600x1000/?car,skoda-superb-2019&sig=6",
       "https://source.unsplash.com/1600x1000/?car,skoda-superb-2019&sig=7"
-    ]
+    ],
+    "make": "Škoda",
+    "model": "Superb",
+    "firstRegistration": "2019-05",
+    "engine": "1984 cm³, 190 AG (140 kW)",
+    "doors": "4/5",
+    "climateControl": "3 zonų klimato kontrolė",
+    "steering": "Kairėje",
+    "inspectionUntil": "2024-09",
+    "weight": "1615",
+    "seats": "5",
+    "registrationCountry": "Čekija",
+    "sdk": "SKSUP2019",
+    "co2": "148 g/km"
   },
   {
     "id": "tesla-model3-2021",
@@ -382,6 +512,19 @@
       "https://source.unsplash.com/1600x1000/?tesla,model3,tesla-model3-2021&sig=5",
       "https://source.unsplash.com/1600x1000/?tesla,model3,tesla-model3-2021&sig=6",
       "https://source.unsplash.com/1600x1000/?tesla,model3,tesla-model3-2021&sig=7"
-    ]
+    ],
+    "make": "Tesla",
+    "model": "Model 3",
+    "firstRegistration": "2021-08",
+    "engine": "Elektrinis, 340 AG (250 kW)",
+    "doors": "4/5",
+    "climateControl": "Automatinė klimato kontrolė",
+    "steering": "Kairėje",
+    "inspectionUntil": "2025-08",
+    "weight": "1847",
+    "seats": "5",
+    "registrationCountry": "Nyderlandai",
+    "sdk": "TSLMDL3",
+    "co2": "0 g/km"
   }
 ]
