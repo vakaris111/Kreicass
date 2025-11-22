@@ -9,10 +9,10 @@
     "fuel": "Dyzelinas",
     "transmission": "Automatinė",
     "drivetrain": "4Matic",
+    "wheelDiameter": "21 col.",
     "power": 200,
     "body": "Visureigis",
     "color": "Grafito pilka",
-    "vin": "W1N16712345678901",
     "description": "Prabangus ir pilnai sukomplektuotas GLE su AMG paketu, oro pakaba ir distronic adaptine sistema. Automobilis prižiūrėtas oficialiame servise, yra pilna aptarnavimo istorija.",
     "features": [
       "AMG eksterjero paketas",
@@ -32,7 +32,8 @@
       "https://source.unsplash.com/1600x1000/?mercedes,gle,gle-350d-2021&sig=5",
       "https://source.unsplash.com/1600x1000/?mercedes,gle,gle-350d-2021&sig=6",
       "https://source.unsplash.com/1600x1000/?mercedes,gle,gle-350d-2021&sig=7"
-    ]
+    ],
+    "sdk": "W1N16712345678901"
   },
   {
     "id": "bmw-530d-2020",
@@ -44,10 +45,10 @@
     "fuel": "Dyzelinas",
     "transmission": "Automatinė",
     "drivetrain": "xDrive",
+    "wheelDiameter": "20 col.",
     "power": 195,
     "body": "Sedanas",
     "color": "Mineral pilka",
-    "vin": "WBAJG610X0B123456",
     "description": "M Sport komplektacija su komforto paketais, lazeriniais žibintais ir HUD. Automobilis importuotas iš Vokietijos, atliktas pilnas techninis patikrinimas.",
     "features": [
       "M Sport apdaila",
@@ -67,7 +68,8 @@
       "https://source.unsplash.com/1600x1000/?bmw,sedan,bmw-530d-2020&sig=5",
       "https://source.unsplash.com/1600x1000/?bmw,sedan,bmw-530d-2020&sig=6",
       "https://source.unsplash.com/1600x1000/?bmw,sedan,bmw-530d-2020&sig=7"
-    ]
+    ],
+    "sdk": "WBAJG610X0B123456"
   },
   {
     "id": "audi-q7-2019",
@@ -79,10 +81,10 @@
     "fuel": "Dyzelinas",
     "transmission": "Automatinė",
     "drivetrain": "Quattro",
+    "wheelDiameter": "21 col.",
     "power": 210,
     "body": "Visureigis",
     "color": "Juoda",
-    "vin": "WAUZZZ4M4KD123456",
     "description": "7 vietų šeimos visureigis su virtualiu kokpitu, Matrix LED žibintais ir oro pakaba. Automobilis turi naujas žiemines bei vasarines padangas.",
     "features": [
       "Matrix LED žibintai",
@@ -102,7 +104,8 @@
       "https://source.unsplash.com/1600x1000/?audi,q7,audi-q7-2019&sig=5",
       "https://source.unsplash.com/1600x1000/?audi,q7,audi-q7-2019&sig=6",
       "https://source.unsplash.com/1600x1000/?audi,q7,audi-q7-2019&sig=7"
-    ]
+    ],
+    "sdk": "WAUZZZ4M4KD123456"
   },
   {
     "id": "vw-tiguan-2018",
@@ -114,10 +117,10 @@
     "fuel": "Benzinas",
     "transmission": "Automatinė",
     "drivetrain": "4Motion",
+    "wheelDiameter": "19 col.",
     "power": 132,
     "body": "Visureigis",
     "color": "Balta",
-    "vin": "WVGZZZ5NZJW123456",
     "description": "Stilingas miesto visureigis su R-Line sportiniu paketu, Discover Pro navigacija ir aktyviomis pagalbos sistemomis.",
     "features": [
       "R-Line eksterjeras",
@@ -137,7 +140,8 @@
       "https://source.unsplash.com/1600x1000/?volkswagen,tiguan,vw-tiguan-2018&sig=5",
       "https://source.unsplash.com/1600x1000/?volkswagen,tiguan,vw-tiguan-2018&sig=6",
       "https://source.unsplash.com/1600x1000/?volkswagen,tiguan,vw-tiguan-2018&sig=7"
-    ]
+    ],
+    "sdk": "WVGZZZ5NZJW123456"
   },
   {
     "id": "toyota-rav4-2022",
@@ -149,10 +153,10 @@
     "fuel": "Hibridas",
     "transmission": "Automatinė",
     "drivetrain": "AWD-i",
+    "wheelDiameter": "18 col.",
     "power": 163,
     "body": "Visureigis",
     "color": "Sidabrinė",
-    "vin": "JTMGBRFV30D123456",
     "description": "Ekonomiškas hibridinis SUV su pilna saugumo paketų įranga, CarPlay ir nuotoliniu šildymu. Automobilis dar galiojančia gamintojo garantija.",
     "features": [
       "Toyota Safety Sense",
@@ -172,7 +176,8 @@
       "https://source.unsplash.com/1600x1000/?toyota,rav4,toyota-rav4-2022&sig=5",
       "https://source.unsplash.com/1600x1000/?toyota,rav4,toyota-rav4-2022&sig=6",
       "https://source.unsplash.com/1600x1000/?toyota,rav4,toyota-rav4-2022&sig=7"
-    ]
+    ],
+    "sdk": "JTMGBRFV30D123456"
   },
   {
     "id": "volvo-xc60-2017",
@@ -184,10 +189,10 @@
     "fuel": "Dyzelinas",
     "transmission": "Automatinė",
     "drivetrain": "AWD",
+    "wheelDiameter": "20 col.",
     "power": 173,
     "body": "Visureigis",
     "color": "Tamsiai mėlyna",
-    "vin": "YV1UZB8A1H1234567",
     "description": "Komfortiškas ir saugus SUV su Inscription apdaila, Pilot Assist ir Premium audio sistema. Salonas išlaikytas itin tvarkingas.",
     "features": [
       "Pilot Assist",
@@ -207,7 +212,8 @@
       "https://source.unsplash.com/1600x1000/?volvo,xc60,volvo-xc60-2017&sig=5",
       "https://source.unsplash.com/1600x1000/?volvo,xc60,volvo-xc60-2017&sig=6",
       "https://source.unsplash.com/1600x1000/?volvo,xc60,volvo-xc60-2017&sig=7"
-    ]
+    ],
+    "sdk": "YV1UZB8A1H1234567"
   },
   {
     "id": "kia-sportage-2023",
@@ -219,10 +225,10 @@
     "fuel": "Hibridas",
     "transmission": "Automatinė",
     "drivetrain": "AWD",
+    "wheelDiameter": "19 col.",
     "power": 169,
     "body": "Visureigis",
     "color": "Žalia",
-    "vin": "U5YPH813RPL123456",
     "description": "Naujos kartos Sportage su dvigubu lenktu ekranu, GT-Line dizaino elementais ir išmaniosiomis saugos sistemomis. Likusi 6 metų gamintojo garantija.",
     "features": [
       "GT-Line apdaila",
@@ -242,7 +248,8 @@
       "https://source.unsplash.com/1600x1000/?kia,sportage,kia-sportage-2023&sig=5",
       "https://source.unsplash.com/1600x1000/?kia,sportage,kia-sportage-2023&sig=6",
       "https://source.unsplash.com/1600x1000/?kia,sportage,kia-sportage-2023&sig=7"
-    ]
+    ],
+    "sdk": "U5YPH813RPL123456"
   },
   {
     "id": "ford-mondeo-2016",
@@ -254,10 +261,10 @@
     "fuel": "Dyzelinas",
     "transmission": "Automatinė",
     "drivetrain": "Priekiniai",
+    "wheelDiameter": "18 col.",
     "power": 132,
     "body": "Universalas",
     "color": "Sidabrinė",
-    "vin": "WF0FXXWPCFGA12345",
     "description": "Erdvus Titanium komplektacijos universalas su adaptyviu kruizo kontrole, šildomomis sėdynėmis ir nauja Android Auto multimedija.",
     "features": [
       "Adaptyvus kruizo kontrolė",
@@ -277,7 +284,8 @@
       "https://source.unsplash.com/1600x1000/?ford,mondeo,ford-mondeo-2016&sig=5",
       "https://source.unsplash.com/1600x1000/?ford,mondeo,ford-mondeo-2016&sig=6",
       "https://source.unsplash.com/1600x1000/?ford,mondeo,ford-mondeo-2016&sig=7"
-    ]
+    ],
+    "sdk": "WF0FXXWPCFGA12345"
   },
   {
     "id": "honda-crv-2015",
@@ -289,10 +297,10 @@
     "fuel": "Dyzelinas",
     "transmission": "Automatinė",
     "drivetrain": "AWD",
+    "wheelDiameter": "18 col.",
     "power": 118,
     "body": "Visureigis",
     "color": "Perlinė balta",
-    "vin": "SHSRE6890FU123456",
     "description": "Patikimas CR-V su aukščiausia Executive komplektacija, panoraminiu stogu ir be raktelio sistema. Salonas prižiūrėtas, automobilis paruoštas kelionėms.",
     "features": [
       "Panoraminis stoglangis",
@@ -312,7 +320,8 @@
       "https://source.unsplash.com/1600x1000/?car,honda-crv-2015&sig=5",
       "https://source.unsplash.com/1600x1000/?car,honda-crv-2015&sig=6",
       "https://source.unsplash.com/1600x1000/?car,honda-crv-2015&sig=7"
-    ]
+    ],
+    "sdk": "SHSRE6890FU123456"
   },
   {
     "id": "skoda-superb-2019",
@@ -324,10 +333,10 @@
     "fuel": "Benzinas",
     "transmission": "Automatinė",
     "drivetrain": "Priekiniai",
+    "wheelDiameter": "19 col.",
     "power": 140,
     "body": "Sedanas",
     "color": "Tamsiai pilka",
-    "vin": "TMBBE9NP4K7023456",
     "description": "Top komplektacijos Superb su masažinėmis sėdynėmis, Canton garso sistema ir inovatyvia LED apšvietimo sistema. Platus saugumo funkcijų paketas.",
     "features": [
       "Masažo funkcija",
@@ -347,7 +356,8 @@
       "https://source.unsplash.com/1600x1000/?car,skoda-superb-2019&sig=5",
       "https://source.unsplash.com/1600x1000/?car,skoda-superb-2019&sig=6",
       "https://source.unsplash.com/1600x1000/?car,skoda-superb-2019&sig=7"
-    ]
+    ],
+    "sdk": "TMBBE9NP4K7023456"
   },
   {
     "id": "tesla-model3-2021",
@@ -359,10 +369,10 @@
     "fuel": "Elektra",
     "transmission": "Automatinė",
     "drivetrain": "AWD",
+    "wheelDiameter": "19 col.",
     "power": 258,
     "body": "Sedanas",
     "color": "Perlinė balta",
-    "vin": "5YJ3E7EB5MF123456",
     "description": "Ilgo nuotolio Model 3 su Acceleration Boost, pilnu autopiloto paketu ir Premium interjeru. Į komplektaciją įeina namų įkroviklis.",
     "features": [
       "Autopilot Full Self-Driving",
@@ -382,6 +392,7 @@
       "https://source.unsplash.com/1600x1000/?tesla,model3,tesla-model3-2021&sig=5",
       "https://source.unsplash.com/1600x1000/?tesla,model3,tesla-model3-2021&sig=6",
       "https://source.unsplash.com/1600x1000/?tesla,model3,tesla-model3-2021&sig=7"
-    ]
+    ],
+    "sdk": "5YJ3E7EB5MF123456"
   }
 ]

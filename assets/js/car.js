@@ -11,14 +11,73 @@ document.addEventListener('DOMContentLoaded', async () => {
     const mainImageButton = document.getElementById('mainImageButton');
     const thumbs = document.getElementById('galleryThumbs');
     const galleryModal = document.getElementById('galleryModal');
-    const lightboxImage = document.getElementById('lightboxImage');
-    const lightboxStrip = document.getElementById('lightboxStrip');
-    const lightboxPrev = document.getElementById('lightboxPrev');
-    const lightboxNext = document.getElementById('lightboxNext');
+    const lightboxScroller = document.getElementById('lightboxScroller');
 
     let activeIndex = 0;
     let lightboxIndex = 0;
     let lastFocus = null;
+    const pointerCache = new Map();
+    let currentZoomImage = null;
+    const zoomState = {
+        scale: 1,
+        originScale: 1,
+        translateX: 0,
+        translateY: 0,
+    };
+    let pinchStartDistance = 0;
+    let panStart = { x: 0, y: 0 };
+    let lastTapTime = 0;
+    const MAX_SCALE = 4;
+
+    const applyZoom = () => {
+        if (!currentZoomImage) return;
+        const { scale, translateX, translateY } = zoomState;
+        currentZoomImage.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+        currentZoomImage.classList.toggle('is-zoomed', scale > 1.01);
+    };
+
+    const resetZoom = () => {
+        zoomState.scale = 1;
+        zoomState.originScale = 1;
+        zoomState.translateX = 0;
+        zoomState.translateY = 0;
+        pinchStartDistance = 0;
+        panStart = { x: 0, y: 0 };
+        if (currentZoomImage) {
+            currentZoomImage.style.transform = '';
+            currentZoomImage.classList.remove('is-zoomed');
+        }
+    };
+
+    const setActiveZoomTarget = (img) => {
+        if (currentZoomImage === img) return;
+        const previous = currentZoomImage;
+        if (previous && previous !== img) {
+            previous.style.transform = '';
+            previous.classList.remove('is-zoomed');
+        }
+        pointerCache.clear();
+        currentZoomImage = img;
+        resetZoom();
+        lastTapTime = 0;
+    };
+
+    const distanceBetweenPointers = () => {
+        if (pointerCache.size < 2) return 0;
+        const [first, second] = Array.from(pointerCache.values());
+        return Math.hypot(second.x - first.x, second.y - first.y);
+    };
+
+    const handlePointerEnd = (event) => {
+        pointerCache.delete(event.pointerId);
+        if (pointerCache.size < 2) {
+            pinchStartDistance = 0;
+            zoomState.originScale = zoomState.scale;
+        }
+        if (!pointerCache.size && zoomState.scale <= 1.01) {
+            resetZoom();
+        }
+    };
 
     if (!slug || !window.CarData) {
         if (subtitleEl) subtitleEl.textContent = 'Automobilis nerastas.';
@@ -63,24 +122,179 @@ document.addEventListener('DOMContentLoaded', async () => {
         const setLightboxImage = (index) => {
             const safeIndex = Math.max(0, Math.min(index, gallery.length - 1));
             lightboxIndex = safeIndex;
-            if (lightboxImage) {
-                lightboxImage.src = gallery[safeIndex];
-                lightboxImage.alt = `${car.title} nuotrauka ${safeIndex + 1}`;
-            }
+            const items = lightboxScroller ? Array.from(lightboxScroller.querySelectorAll('[data-index]')) : [];
+            items.forEach((item) => {
+                const isActive = Number(item.dataset.index) === safeIndex;
+                item.classList.toggle('active', isActive);
+                if (isActive) {
+                    const img = item.querySelector('img');
+                    if (img) {
+                        setActiveZoomTarget(img);
+                        img.alt = `${car.title} nuotrauka ${safeIndex + 1}`;
+                    }
+                }
+            });
             updateMainImage(safeIndex);
         };
 
-        const buildLightboxStrip = () => {
-            if (!lightboxStrip) return;
-            lightboxStrip.innerHTML = gallery
+        const scrollToLightboxIndex = (index, { instant = false } = {}) => {
+            if (!lightboxScroller) return;
+            const target = lightboxScroller.querySelector(`[data-index="${index}"]`);
+            if (!target) return;
+            target.scrollIntoView({
+                block: 'center',
+                inline: 'nearest',
+                behavior: instant ? 'auto' : 'smooth',
+            });
+        };
+
+        const attachZoomHandlers = (img) => {
+            img.addEventListener('load', () => {
+                if (currentZoomImage === img && zoomState.scale <= 1.01) {
+                    resetZoom();
+                }
+            });
+
+            img.addEventListener('pointerdown', (event) => {
+                setActiveZoomTarget(img);
+                pointerCache.set(event.pointerId, { x: event.clientX, y: event.clientY });
+                const isTouch = event.pointerType === 'touch';
+                const now = Date.now();
+
+                if (isTouch) {
+                    if (now - lastTapTime < 280 && pointerCache.size === 1) {
+                        event.preventDefault();
+                        if (zoomState.scale > 1.01) {
+                            resetZoom();
+                        } else {
+                            zoomState.scale = 2;
+                            zoomState.originScale = 2;
+                            zoomState.translateX = 0;
+                            zoomState.translateY = 0;
+                            applyZoom();
+                        }
+                    }
+                    lastTapTime = now;
+                }
+
+                if (pointerCache.size === 2) {
+                    event.preventDefault();
+                    img.setPointerCapture(event.pointerId);
+                    pinchStartDistance = distanceBetweenPointers();
+                    zoomState.originScale = zoomState.scale;
+                } else {
+                    if (zoomState.scale > 1.01) {
+                        img.setPointerCapture(event.pointerId);
+                    }
+                    panStart = { x: event.clientX - zoomState.translateX, y: event.clientY - zoomState.translateY };
+                }
+            });
+
+            img.addEventListener('pointermove', (event) => {
+                if (!pointerCache.has(event.pointerId) || currentZoomImage !== img) return;
+                pointerCache.set(event.pointerId, { x: event.clientX, y: event.clientY });
+                if (pointerCache.size === 2) {
+                    const distance = distanceBetweenPointers();
+                    if (pinchStartDistance) {
+                        const scale = Math.max(1, Math.min(MAX_SCALE, zoomState.originScale * (distance / pinchStartDistance)));
+                        zoomState.scale = scale;
+                        if (scale === 1) {
+                            zoomState.translateX = 0;
+                            zoomState.translateY = 0;
+                        }
+                        applyZoom();
+                    }
+                } else if (zoomState.scale > 1) {
+                    const point = pointerCache.get(event.pointerId);
+                    if (point) {
+                        zoomState.translateX = point.x - panStart.x;
+                        zoomState.translateY = point.y - panStart.y;
+                        applyZoom();
+                    }
+                }
+            });
+
+            ['pointerup', 'pointercancel', 'pointerleave', 'pointerout'].forEach((type) => {
+                img.addEventListener(type, (event) => {
+                    if (currentZoomImage !== img) return;
+                    handlePointerEnd(event);
+                });
+            });
+
+            img.addEventListener(
+                'wheel',
+                (event) => {
+                    if (currentZoomImage !== img) return;
+                    if (!event.ctrlKey && !event.metaKey) {
+                        return;
+                    }
+                    event.preventDefault();
+                    const factor = event.deltaY < 0 ? 1.15 : 0.85;
+                    const scale = Math.max(1, Math.min(MAX_SCALE, zoomState.scale * factor));
+                    zoomState.scale = scale;
+                    if (scale === 1) {
+                        zoomState.translateX = 0;
+                        zoomState.translateY = 0;
+                    }
+                    applyZoom();
+                },
+                { passive: false }
+            );
+
+            img.addEventListener('dblclick', (event) => {
+                if (currentZoomImage !== img) return;
+                event.preventDefault();
+                if (zoomState.scale > 1.01) {
+                    resetZoom();
+                } else {
+                    zoomState.scale = 2;
+                    zoomState.originScale = 2;
+                    zoomState.translateX = 0;
+                    zoomState.translateY = 0;
+                    applyZoom();
+                }
+            });
+        };
+
+        const buildLightboxScroller = () => {
+            if (!lightboxScroller) return;
+            lightboxScroller.innerHTML = gallery
                 .map(
                     (src, index) => `
-                        <button type="button" data-index="${index}" class="${index === lightboxIndex ? 'active' : ''}">
-                            <img src="${src}" alt="${car.title} miniatiūra ${index + 1}" loading="lazy" />
-                        </button>
+                        <figure class="lightbox__item" data-index="${index}">
+                            <img src="${src}" alt="${car.title} nuotrauka ${index + 1}" loading="lazy" />
+                        </figure>
                     `
                 )
                 .join('');
+
+            Array.from(lightboxScroller.querySelectorAll('img')).forEach((img, index) => {
+                img.addEventListener('click', (event) => {
+                    const item = img.closest('[data-index]');
+                    const itemIndex = item ? Number(item.dataset.index) : index;
+                    if (itemIndex !== lightboxIndex) {
+                        setLightboxImage(index);
+                        scrollToLightboxIndex(index);
+                        return;
+                    }
+
+                    event.preventDefault();
+                    if (currentZoomImage !== img) {
+                        setActiveZoomTarget(img);
+                    }
+
+                    if (zoomState.scale > 1.01) {
+                        resetZoom();
+                    } else {
+                        zoomState.scale = 2;
+                        zoomState.originScale = 2;
+                        zoomState.translateX = 0;
+                        zoomState.translateY = 0;
+                        applyZoom();
+                    }
+                });
+                attachZoomHandlers(img);
+            });
         };
 
         const openLightbox = (index = 0) => {
@@ -89,12 +303,27 @@ document.addEventListener('DOMContentLoaded', async () => {
             galleryModal.removeAttribute('hidden');
             galleryModal.classList.add('open');
             document.body.classList.add('no-scroll');
+            pointerCache.clear();
+            resetZoom();
+            lastTapTime = 0;
+            buildLightboxScroller();
+            const hint = galleryModal.querySelector('.lightbox__hint');
+            if (hint) {
+                if (gallery.length > 1) {
+                    hint.removeAttribute('hidden');
+                } else {
+                    hint.setAttribute('hidden', '');
+                }
+            }
             setLightboxImage(index);
-            buildLightboxStrip();
+            scrollToLightboxIndex(index, { instant: true });
         };
 
         const closeLightbox = () => {
             if (!galleryModal || galleryModal.hasAttribute('hidden')) return;
+            pointerCache.clear();
+            resetZoom();
+            lastTapTime = 0;
             galleryModal.classList.remove('open');
             galleryModal.setAttribute('hidden', '');
             document.body.classList.remove('no-scroll');
@@ -107,7 +336,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (!gallery || !gallery.length) return;
             const nextIndex = (lightboxIndex + direction + gallery.length) % gallery.length;
             setLightboxImage(nextIndex);
-            buildLightboxStrip();
+            scrollToLightboxIndex(nextIndex);
         };
 
         const maxPreview = 5;
@@ -150,23 +379,33 @@ document.addEventListener('DOMContentLoaded', async () => {
             mainImageButton.addEventListener('click', () => openLightbox(activeIndex));
         }
 
-        if (lightboxStrip) {
-            lightboxStrip.addEventListener('click', (event) => {
-                const target = event.target.closest('button[data-index]');
-                if (!target) return;
-                const index = Number(target.dataset.index);
-                setLightboxImage(index);
-                buildLightboxStrip();
-                updateMainImage(index);
+        let scrollRaf = null;
+        if (lightboxScroller) {
+            lightboxScroller.addEventListener('scroll', () => {
+                if (scrollRaf) {
+                    cancelAnimationFrame(scrollRaf);
+                }
+                scrollRaf = requestAnimationFrame(() => {
+                    const items = Array.from(lightboxScroller.querySelectorAll('[data-index]'));
+                    if (!items.length) return;
+                    const { top, height } = lightboxScroller.getBoundingClientRect();
+                    const center = top + height / 2;
+                    let closestIndex = lightboxIndex;
+                    let closestDistance = Infinity;
+                    items.forEach((item) => {
+                        const rect = item.getBoundingClientRect();
+                        const itemCenter = rect.top + rect.height / 2;
+                        const distance = Math.abs(itemCenter - center);
+                        if (distance < closestDistance) {
+                            closestDistance = distance;
+                            closestIndex = Number(item.dataset.index);
+                        }
+                    });
+                    if (closestIndex !== lightboxIndex) {
+                        setLightboxImage(closestIndex);
+                    }
+                });
             });
-        }
-
-        if (lightboxPrev) {
-            lightboxPrev.addEventListener('click', () => navigateLightbox(-1));
-        }
-
-        if (lightboxNext) {
-            lightboxNext.addEventListener('click', () => navigateLightbox(1));
         }
 
         if (galleryModal) {
@@ -183,11 +422,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (event.key === 'Escape') {
                 closeLightbox();
             }
-            if (event.key === 'ArrowRight') {
+            if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
                 event.preventDefault();
                 navigateLightbox(1);
             }
-            if (event.key === 'ArrowLeft') {
+            if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
                 event.preventDefault();
                 navigateLightbox(-1);
             }
@@ -200,10 +439,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             { label: 'Kuras', value: car.fuel },
             { label: 'Pavarų dėžė', value: car.transmission },
             { label: 'Varantieji ratai', value: car.drivetrain || 'Nenurodyta' },
+            { label: 'Ratlankių skersmuo', value: car.wheelDiameter || 'Nenurodyta' },
             { label: 'Galia', value: car.power ? `${car.power} kW` : 'Nenurodyta' },
             { label: 'Kėbulas', value: car.body || 'Nenurodyta' },
             { label: 'Spalva', value: car.color || 'Nenurodyta' },
-            { label: 'VIN', value: car.vin || 'Pateikiama apžiūros metu' },
+            { label: 'SDK', value: car.sdk || car.vin || 'Pateikiama apžiūros metu' },
         ];
 
         if (specsEl) {

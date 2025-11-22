@@ -160,6 +160,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         form.querySelector('#carFuel').value = car.fuel;
         form.querySelector('#carTransmission').value = car.transmission;
         form.querySelector('#carDrivetrain').value = car.drivetrain || '';
+        form.querySelector('#carWheelDiameter').value = car.wheelDiameter || '';
         form.querySelector('#carPower').value = car.power || '';
         form.querySelector('#carBody').value = car.body || '';
         form.querySelector('#carColor').value = car.color || '';
@@ -175,7 +176,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             dataUrl: src,
         }));
         renderUploadedImages();
-        form.querySelector('#carVin').value = car.vin || '';
+        form.querySelector('#carSdk').value = car.sdk || car.vin || '';
         form.querySelector('button[type="submit"]').textContent = 'Atnaujinti automobilį';
         form.scrollIntoView({ behavior: 'smooth' });
     };
@@ -206,6 +207,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const fuel = form.querySelector('#carFuel').value.trim();
         const transmission = form.querySelector('#carTransmission').value.trim();
         const drivetrain = form.querySelector('#carDrivetrain').value.trim();
+        const wheelDiameter = form.querySelector('#carWheelDiameter').value.trim();
         const power = Number(form.querySelector('#carPower').value) || null;
         const body = form.querySelector('#carBody').value.trim();
         const color = form.querySelector('#carColor').value.trim();
@@ -220,7 +222,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             .value.split(',')
             .map((item) => item.trim())
             .filter(Boolean);
-        const vin = form.querySelector('#carVin').value.trim();
+        const sdk = form.querySelector('#carSdk').value.trim();
 
         const slug = editingSlug || window.CarData.generateSlug(title);
 
@@ -233,20 +235,27 @@ document.addEventListener('DOMContentLoaded', async () => {
             fuel,
             transmission,
             drivetrain,
+            wheelDiameter,
             power,
             body,
             color,
             description,
             features,
             gallery: [...galleryLinks, ...uploadedImages.map((item) => item.dataUrl)],
-            vin,
+            sdk,
         };
 
-        await window.CarData.upsertCar(car);
-        await loadCars();
-        resetForm();
-        submitBtn.disabled = false;
-        alert('Automobilis išsaugotas!');
+        try {
+            await window.CarData.upsertCar(car);
+            await loadCars();
+            resetForm();
+            alert('Automobilis išsaugotas!');
+        } catch (error) {
+            console.error('Nepavyko išsaugoti automobilio:', error);
+            alert(error?.message || 'Nepavyko išsaugoti automobilio.');
+        } finally {
+            submitBtn.disabled = false;
+        }
     });
 
     if (uploadInput) {
@@ -275,7 +284,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             try {
                 const data = JSON.parse(e.target.result);
                 if (!Array.isArray(data)) throw new Error('Neteisingas failo formatas.');
-                window.CarData.saveCars(data);
+                await window.CarData.saveCars(data);
                 await loadCars();
                 alert('Automobiliai sėkmingai importuoti.');
             } catch (error) {
