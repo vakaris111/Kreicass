@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const passwordInput = document.getElementById('adminPassword');
     const messageEl = document.getElementById('loginMessage');
     const params = new URLSearchParams(window.location.search);
-    const redirectTarget = params.get('redirect') || 'admin.html';
+    const redirectTarget = params.get('redirect') || 'cars.html';
 
     if (!form || !window.authService) {
         return;

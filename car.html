@@ -23,7 +23,6 @@
                 <a href="cars.html" class="active">Automobiliai</a>
                 <a href="about.html">Apie mus</a>
                 <a href="contact.html">Kontaktai</a>
-                <a href="admin.html" class="admin-link">Admin</a>
             </nav>
         </div>
     </header>
@@ -42,10 +41,10 @@
                     <div class="gallery-main">
                         <button type="button" class="gallery-main__button" id="mainImageButton">
                             <img id="mainImage" src="" alt="Automobilio nuotrauka" />
+                            <span class="gallery-main__counter" id="mainImageCounter"></span>
                             <span class="gallery-main__zoom" aria-hidden="true">Padidinti</span>
                         </button>
                     </div>
-                    <div class="gallery-thumbs" id="galleryThumbs"></div>
                 </div>
                 <div class="car-specs" id="carSpecs"></div>
             </div>
@@ -66,12 +65,14 @@
                     <button class="lightbox__nav lightbox__nav--prev" type="button" id="lightboxPrev" aria-label="Ankstesnė nuotrauka">
                         <span aria-hidden="true">‹</span>
                     </button>
-                    <img id="lightboxImage" src="" alt="Automobilio nuotrauka dideliame lange" />
+                    <div class="lightbox__image-wrapper">
+                        <img id="lightboxImage" src="" alt="Automobilio nuotrauka dideliame lange" />
+                        <span class="lightbox__counter" id="lightboxCounter"></span>
+                    </div>
                     <button class="lightbox__nav lightbox__nav--next" type="button" id="lightboxNext" aria-label="Kita nuotrauka">
                         <span aria-hidden="true">›</span>
                     </button>
                 </div>
-                <div class="lightbox__strip" id="lightboxStrip"></div>
             </div>
         </div>
     </main>
