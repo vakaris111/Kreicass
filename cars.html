@@ -23,7 +23,6 @@
                 <a href="cars.html" class="active">Automobiliai</a>
                 <a href="about.html">Apie mus</a>
                 <a href="contact.html">Kontaktai</a>
-                <a href="admin.html" class="admin-link">Admin</a>
             </nav>
         </div>
     </header>
@@ -38,28 +37,30 @@
 
         <section class="section">
             <div class="container filters">
-                <div class="search-box">
-                    <label for="search">Paieška</label>
-                    <input type="search" id="search" name="search" placeholder="Markė, modelis, metai..." />
-                </div>
-                <div class="filters-row">
+                <div class="filters-grid">
                     <div class="select">
-                        <label for="fuel">Kuras</label>
-                        <select id="fuel" name="fuel">
-                            <option value="">Visi</option>
-                            <option value="Dyzelinas">Dyzelinas</option>
-                            <option value="Benzinas">Benzinas</option>
-                            <option value="Hibridas">Hibridas</option>
-                            <option value="Elektra">Elektra</option>
-                        </select>
+                        <label for="make">Markė</label>
+                        <select id="make" name="make"></select>
+                    </div>
+                    <div class="select">
+                        <label for="model">Modelis</label>
+                        <select id="model" name="model"></select>
+                    </div>
+                    <div class="select">
+                        <label for="priceMax">Iki (€)</label>
+                        <select id="priceMax" name="priceMax"></select>
+                    </div>
+                    <div class="select">
+                        <label for="body">Kėbulo tipas</label>
+                        <select id="body" name="body"></select>
                     </div>
                     <div class="select">
                         <label for="transmission">Pavarų dėžė</label>
-                        <select id="transmission" name="transmission">
-                            <option value="">Visos</option>
-                            <option value="Automatinė">Automatinė</option>
-                            <option value="Mechaninė">Mechaninė</option>
-                        </select>
+                        <select id="transmission" name="transmission"></select>
+                    </div>
+                    <div class="select">
+                        <label for="fuel">Kuro tipas</label>
+                        <select id="fuel" name="fuel"></select>
                     </div>
                 </div>
             </div>
