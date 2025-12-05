@@ -112,11 +112,11 @@
 
         if (window.RemoteSync && window.RemoteSync.isEnabled()) {
             const remote = await tryFetchRemote();
-            if (remote) return remote;
+            if (remote && remote.length) return remote;
         }
 
         const stored = readFromStorage();
-        if (stored) {
+        if (stored && stored.length) {
             const normalized = normalizeCars(stored);
             cache = normalized;
             dataSource = 'storage';
