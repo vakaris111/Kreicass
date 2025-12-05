@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const descriptionEl = document.getElementById('carDescription');
     const featuresEl = document.getElementById('carFeatures');
     const specsEl = document.getElementById('carSpecs');
+    const sdkSection = document.getElementById('sdkSection');
+    const sdkCard = document.getElementById('sdkCard');
     const mainImage = document.getElementById('mainImage');
     const mainImageButton = document.getElementById('mainImageButton');
     const mainImageCounter = document.getElementById('mainImageCounter');
@@ -329,6 +331,37 @@ document.addEventListener('DOMContentLoaded', async () => {
                         .join('')}
                 </div>
             `;
+        }
+
+        if (sdkCard) {
+            sdkCard.innerHTML = `
+                <div class="sdk-card__header">
+                    <div>
+                        <p class="eyebrow">SDK</p>
+                        <h2>SDK išrašui reikalingi duomenys</h2>
+                        <p class="sdk-card__note">SKD yra šio automobilio kodas, kurį pateikiame su svarbiausia technine informacija.</p>
+                    </div>
+                    <div class="sdk-code">
+                        <span>SKD kodas</span>
+                        <strong>${car.sdk || 'Nepateikta'}</strong>
+                    </div>
+                </div>
+                <div class="spec-grid spec-grid--compact">
+                    ${specItems
+                        .map(
+                            (item) => `
+                                <div class="spec-item">
+                                    <span>${item.label}</span>
+                                    <strong>${item.value}</strong>
+                                </div>
+                            `
+                        )
+                        .join('')}
+                </div>
+            `;
+            if (sdkSection) {
+                sdkSection.hidden = false;
+            }
         }
 
         if (descriptionEl) {

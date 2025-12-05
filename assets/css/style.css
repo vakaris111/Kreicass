@@ -192,6 +192,28 @@ img {
     color: var(--text-muted);
 }
 
+.nav-banner {
+    padding: 1.5rem 0 0;
+}
+
+.nav-banner__frame {
+    border-radius: 1.5rem;
+    overflow: hidden;
+    box-shadow: 0 28px 48px rgba(9, 14, 26, 0.35);
+    border: 1px solid rgba(91, 141, 239, 0.35);
+    background: radial-gradient(circle at 20% 30%, rgba(91, 141, 239, 0.18), transparent 35%),
+        radial-gradient(circle at 80% 70%, rgba(91, 141, 239, 0.12), transparent 30%),
+        linear-gradient(145deg, rgba(10, 14, 26, 0.9), rgba(15, 24, 44, 0.85));
+}
+
+.nav-banner__frame img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    aspect-ratio: 16 / 6;
+}
+
 .btn {
     display: inline-flex;
     align-items: center;
@@ -1243,6 +1265,10 @@ img {
     gap: 1.25rem;
 }
 
+.spec-grid--compact {
+    gap: 1rem;
+}
+
 .spec-item {
     position: relative;
     overflow: hidden;
@@ -1289,6 +1315,57 @@ img {
     font-weight: 700;
     color: #fff;
     letter-spacing: -0.01em;
+}
+
+.sdk-card {
+    padding: 1.75rem;
+    border-radius: 1.35rem;
+    background: var(--card-strong);
+    border: 1px solid rgba(91, 141, 239, 0.35);
+    box-shadow: 0 22px 38px rgba(7, 12, 24, 0.28);
+    display: grid;
+    gap: 1.35rem;
+}
+
+.sdk-card__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.sdk-card__header h2 {
+    margin: 0.15rem 0 0.25rem;
+}
+
+.sdk-card__note {
+    margin: 0;
+    color: var(--text-muted);
+    max-width: 48ch;
+}
+
+.sdk-code {
+    padding: 1rem 1.15rem;
+    border-radius: 1rem;
+    background: linear-gradient(145deg, rgba(91, 141, 239, 0.12), rgba(91, 141, 239, 0.28));
+    border: 1px solid rgba(91, 141, 239, 0.32);
+    min-width: 180px;
+    text-align: center;
+}
+
+.sdk-code span {
+    display: block;
+    color: rgba(199, 214, 245, 0.85);
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.sdk-code strong {
+    display: block;
+    font-size: 1.15rem;
+    margin-top: 0.2rem;
 }
 
 .features-list {
