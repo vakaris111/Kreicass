@@ -1072,6 +1072,16 @@ img {
     border: 1px solid rgba(132, 151, 201, 0.35);
     box-shadow: 0 20px 60px rgba(4, 7, 15, 0.75);
     overflow: hidden;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+}
+
+.image-overlay__frame {
+    position: relative;
+    height: min(74vh, 760px);
+    display: grid;
+    place-items: center;
 }
 
 .image-overlay img {
@@ -1080,6 +1090,49 @@ img {
     height: 100%;
     object-fit: contain;
     background: #05070e;
+    transition: transform 0.2s ease;
+    cursor: zoom-in;
+}
+
+.image-overlay.is-zoomed img {
+    transform: scale(1.08);
+    cursor: zoom-out;
+}
+
+.image-overlay__counter {
+    position: absolute;
+    right: 1rem;
+    bottom: 1rem;
+    background: rgba(5, 7, 14, 0.7);
+    border-radius: 999px;
+    padding: 0.35rem 0.8rem;
+    font-size: 0.9rem;
+    color: #e8edff;
+    border: 1px solid rgba(132, 151, 201, 0.3);
+    box-shadow: 0 6px 22px rgba(5, 7, 14, 0.35);
+}
+
+.image-overlay__nav {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1px solid rgba(132, 151, 201, 0.45);
+    background: rgba(7, 10, 18, 0.8);
+    color: #fff;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+    margin: 0 0.5rem;
+    box-shadow: 0 16px 42px rgba(4, 7, 15, 0.55);
+}
+
+.image-overlay__nav:hover,
+.image-overlay__nav:focus-visible {
+    outline: none;
+    background: rgba(91, 141, 239, 0.9);
+    border-color: rgba(91, 141, 239, 0.95);
+    transform: scale(1.05);
 }
 
 .image-overlay__close {

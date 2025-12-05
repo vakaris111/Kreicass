@@ -14,54 +14,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     let activeIndex = 0;
 
-    const openImageOverlay = (src, alt) => {
-        const overlay = document.createElement('div');
-        overlay.className = 'image-overlay';
-        overlay.setAttribute('role', 'dialog');
-        overlay.setAttribute('aria-modal', 'true');
-        overlay.innerHTML = `
-            <div class="image-overlay__content">
-                <button type="button" class="image-overlay__close" aria-label="Užverti nuotrauką">×</button>
-                <img src="${src}" alt="${alt}" />
-            </div>
-        `;
-
-        const closeOverlay = () => {
-            overlay.classList.remove('is-visible');
-            document.body.classList.remove('is-overlay-open');
-            overlay.addEventListener(
-                'transitionend',
-                () => {
-                    overlay.remove();
-                },
-                { once: true }
-            );
-            document.removeEventListener('keydown', handleEscape);
-        };
-
-        const handleEscape = (event) => {
-            if (event.key === 'Escape') {
-                closeOverlay();
-            }
-        };
-
-        overlay.addEventListener('click', (event) => {
-            if (event.target === overlay) {
-                closeOverlay();
-            }
-        });
-
-        overlay.querySelector('.image-overlay__close')?.addEventListener('click', closeOverlay);
-        document.addEventListener('keydown', handleEscape);
-
-        document.body.appendChild(overlay);
-        document.body.classList.add('is-overlay-open');
-
-        requestAnimationFrame(() => {
-            overlay.classList.add('is-visible');
-        });
-    };
-
     if (!slug || !window.CarData) {
         if (subtitleEl) subtitleEl.textContent = 'Automobilis nerastas.';
         return;
@@ -81,6 +33,97 @@ document.addEventListener('DOMContentLoaded', async () => {
         const gallery = car.gallery && car.gallery.length ? car.gallery : ['https://placehold.co/800x500?text=MB+Kreicas'];
 
         const wrapIndex = (index) => (gallery.length ? (index + gallery.length) % gallery.length : 0);
+
+        const openImageOverlay = ({ images, startIndex = 0, title = '' }) => {
+            if (!images || !images.length) return;
+
+            const overlay = document.createElement('div');
+            overlay.className = 'image-overlay';
+            overlay.setAttribute('role', 'dialog');
+            overlay.setAttribute('aria-modal', 'true');
+
+            overlay.innerHTML = `
+                <div class="image-overlay__content">
+                    <button type="button" class="image-overlay__close" aria-label="Užverti nuotrauką">×</button>
+                    <button type="button" class="image-overlay__nav image-overlay__nav--prev" aria-label="Ankstesnė nuotrauka">
+                        <span aria-hidden="true">‹</span>
+                    </button>
+                    <div class="image-overlay__frame">
+                        <img alt="" />
+                        <span class="image-overlay__counter"></span>
+                    </div>
+                    <button type="button" class="image-overlay__nav image-overlay__nav--next" aria-label="Kita nuotrauka">
+                        <span aria-hidden="true">›</span>
+                    </button>
+                </div>
+            `;
+
+            const overlayImage = overlay.querySelector('img');
+            const overlayCounter = overlay.querySelector('.image-overlay__counter');
+            const prevButton = overlay.querySelector('.image-overlay__nav--prev');
+            const nextButton = overlay.querySelector('.image-overlay__nav--next');
+
+            const setImage = (index) => {
+                const safeIndex = wrapIndex(index);
+                activeIndex = safeIndex;
+                updateMainImage(safeIndex);
+                if (overlayImage) {
+                    overlayImage.src = images[safeIndex];
+                    overlayImage.alt = `${title || 'Automobilio'} nuotrauka ${safeIndex + 1}`;
+                }
+                if (overlayCounter) {
+                    overlayCounter.textContent = `${safeIndex + 1}/${images.length}`;
+                }
+            };
+
+            const closeOverlay = () => {
+                overlay.classList.remove('is-visible');
+                document.body.classList.remove('is-overlay-open');
+                overlay.addEventListener(
+                    'transitionend',
+                    () => {
+                        overlay.remove();
+                    },
+                    { once: true }
+                );
+                document.removeEventListener('keydown', handleKeydown);
+            };
+
+            const handleKeydown = (event) => {
+                if (event.key === 'Escape') {
+                    closeOverlay();
+                }
+                if (event.key === 'ArrowLeft') {
+                    setImage(activeIndex - 1);
+                }
+                if (event.key === 'ArrowRight') {
+                    setImage(activeIndex + 1);
+                }
+            };
+
+            overlay.addEventListener('click', (event) => {
+                if (event.target === overlay) {
+                    closeOverlay();
+                }
+            });
+
+            overlay.querySelector('.image-overlay__close')?.addEventListener('click', closeOverlay);
+            prevButton?.addEventListener('click', () => setImage(activeIndex - 1));
+            nextButton?.addEventListener('click', () => setImage(activeIndex + 1));
+            overlayImage?.addEventListener('click', () => {
+                overlay.classList.toggle('is-zoomed');
+            });
+
+            document.addEventListener('keydown', handleKeydown);
+
+            document.body.appendChild(overlay);
+            document.body.classList.add('is-overlay-open');
+
+            requestAnimationFrame(() => {
+                overlay.classList.add('is-visible');
+                setImage(startIndex);
+            });
+        };
 
         const updateMainImage = (index) => {
             const safeIndex = wrapIndex(index);
@@ -112,7 +155,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (mainImage) {
             mainImage.addEventListener('click', () => {
-                openImageOverlay(gallery[activeIndex], `${car.title} nuotrauka ${activeIndex + 1}`);
+                openImageOverlay({ images: gallery, startIndex: activeIndex, title: car.title });
             });
         }
 
