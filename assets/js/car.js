@@ -14,6 +14,54 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     let activeIndex = 0;
 
+    const openImageOverlay = (src, alt) => {
+        const overlay = document.createElement('div');
+        overlay.className = 'image-overlay';
+        overlay.setAttribute('role', 'dialog');
+        overlay.setAttribute('aria-modal', 'true');
+        overlay.innerHTML = `
+            <div class="image-overlay__content">
+                <button type="button" class="image-overlay__close" aria-label="Užverti nuotrauką">×</button>
+                <img src="${src}" alt="${alt}" />
+            </div>
+        `;
+
+        const closeOverlay = () => {
+            overlay.classList.remove('is-visible');
+            document.body.classList.remove('is-overlay-open');
+            overlay.addEventListener(
+                'transitionend',
+                () => {
+                    overlay.remove();
+                },
+                { once: true }
+            );
+            document.removeEventListener('keydown', handleEscape);
+        };
+
+        const handleEscape = (event) => {
+            if (event.key === 'Escape') {
+                closeOverlay();
+            }
+        };
+
+        overlay.addEventListener('click', (event) => {
+            if (event.target === overlay) {
+                closeOverlay();
+            }
+        });
+
+        overlay.querySelector('.image-overlay__close')?.addEventListener('click', closeOverlay);
+        document.addEventListener('keydown', handleEscape);
+
+        document.body.appendChild(overlay);
+        document.body.classList.add('is-overlay-open');
+
+        requestAnimationFrame(() => {
+            overlay.classList.add('is-visible');
+        });
+    };
+
     if (!slug || !window.CarData) {
         if (subtitleEl) subtitleEl.textContent = 'Automobilis nerastas.';
         return;
@@ -60,6 +108,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (mainNext) {
             mainNext.addEventListener('click', () => navigateMain(1));
+        }
+
+        if (mainImage) {
+            mainImage.addEventListener('click', () => {
+                openImageOverlay(gallery[activeIndex], `${car.title} nuotrauka ${activeIndex + 1}`);
+            });
         }
 
         const specItems = [
