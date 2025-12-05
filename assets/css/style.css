@@ -124,16 +124,29 @@ img {
 }
 
 .hero {
+    position: relative;
     padding: 5.5rem 0 3.5rem;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
     background:
-        radial-gradient(circle at 88% 16%, rgba(91, 141, 239, 0.2), transparent 58%),
-        var(--bg);
+        linear-gradient(115deg, rgba(10, 14, 26, 0.94) 0%, rgba(10, 14, 26, 0.78) 35%, rgba(10, 14, 26, 0.4) 55%, rgba(10, 14, 26, 0.78) 100%),
+        url('https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+    transform: scale(1.02);
+    filter: saturate(1.05);
+    z-index: 0;
 }
 
 .hero-content {
     display: grid;
     gap: 2.5rem;
     align-items: center;
+    position: relative;
+    z-index: 1;
 }
 
 .hero-copy {
@@ -308,10 +321,32 @@ img {
     box-shadow: var(--shadow);
 }
 
-.car-card img {
+.car-card:hover .car-card__media img {
+    transform: scale(1.03);
+}
+
+.car-card__link {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    color: inherit;
+}
+
+.car-card__media {
+    background: radial-gradient(circle at 20% 30%, rgba(91, 141, 239, 0.14), transparent 50%), rgba(12, 18, 32, 0.9);
+    display: grid;
+    place-items: center;
+    padding: 0.85rem;
+    border-bottom: 1px solid rgba(132, 151, 201, 0.2);
+    min-height: 210px;
+}
+
+.car-card__media img {
     width: 100%;
-    height: 180px;
-    object-fit: cover;
+    height: 100%;
+    object-fit: contain;
+    mix-blend-mode: lighten;
+    transition: transform 0.25s ease;
 }
 
 .car-card__body {
@@ -917,15 +952,16 @@ img {
     border-radius: 1.1rem;
     overflow: hidden;
     border: 1px solid rgba(132, 151, 201, 0.25);
-    background: rgba(255, 255, 255, 0.04);
+    background: radial-gradient(circle at 25% 20%, rgba(91, 141, 239, 0.18), transparent 55%), rgba(11, 16, 28, 0.85);
     position: relative;
-    min-height: clamp(260px, 58vh, 520px);
+    min-height: clamp(280px, 58vh, 560px);
 }
 
 .gallery-main img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
+    max-height: 72vh;
 }
 
 .gallery-main__counter {
@@ -948,7 +984,9 @@ img {
     width: 100%;
     height: 100%;
     position: relative;
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .gallery-main__button:focus-visible {
@@ -973,6 +1011,40 @@ img {
     .gallery-main {
         min-height: clamp(300px, 65vh, 580px);
     }
+}
+
+.gallery-thumbs {
+    display: grid;
+    gap: 0.65rem;
+    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+}
+
+.gallery-thumb {
+    border: 0;
+    padding: 0;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 0.85rem;
+    overflow: hidden;
+    border: 2px solid transparent;
+    transition: border 0.25s ease, transform 0.25s ease;
+}
+
+.gallery-thumb:hover,
+.gallery-thumb:focus-visible {
+    border-color: var(--accent);
+    outline: none;
+    transform: translateY(-2px);
+}
+
+.gallery-thumb.is-active {
+    border-color: rgba(91, 141, 239, 0.75);
+}
+
+.gallery-thumb img {
+    width: 100%;
+    height: 78px;
+    object-fit: cover;
+    display: block;
 }
 
 .lightbox {
@@ -1184,6 +1256,10 @@ img {
     gap: 1.25rem;
 }
 
+.spec-grid--compact {
+    gap: 1rem;
+}
+
 .spec-item {
     position: relative;
     overflow: hidden;
@@ -1230,6 +1306,57 @@ img {
     font-weight: 700;
     color: #fff;
     letter-spacing: -0.01em;
+}
+
+.sdk-card {
+    padding: 1.75rem;
+    border-radius: 1.35rem;
+    background: var(--card-strong);
+    border: 1px solid rgba(91, 141, 239, 0.35);
+    box-shadow: 0 22px 38px rgba(7, 12, 24, 0.28);
+    display: grid;
+    gap: 1.35rem;
+}
+
+.sdk-card__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.sdk-card__header h2 {
+    margin: 0.15rem 0 0.25rem;
+}
+
+.sdk-card__note {
+    margin: 0;
+    color: var(--text-muted);
+    max-width: 48ch;
+}
+
+.sdk-code {
+    padding: 1rem 1.15rem;
+    border-radius: 1rem;
+    background: linear-gradient(145deg, rgba(91, 141, 239, 0.12), rgba(91, 141, 239, 0.28));
+    border: 1px solid rgba(91, 141, 239, 0.32);
+    min-width: 180px;
+    text-align: center;
+}
+
+.sdk-code span {
+    display: block;
+    color: rgba(199, 214, 245, 0.85);
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.sdk-code strong {
+    display: block;
+    font-size: 1.15rem;
+    margin-top: 0.2rem;
 }
 
 .features-list {
