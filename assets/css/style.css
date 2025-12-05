@@ -1044,6 +1044,76 @@ img {
     right: 1rem;
 }
 
+.image-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(5, 7, 14, 0.6);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    display: grid;
+    place-items: center;
+    padding: 1.5rem;
+    z-index: 1200;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.image-overlay.is-visible {
+    opacity: 1;
+}
+
+.image-overlay__content {
+    position: relative;
+    max-width: min(1100px, 94vw);
+    max-height: 92vh;
+    width: 100%;
+    background: radial-gradient(circle at 25% 20%, rgba(91, 141, 239, 0.25), transparent 45%), rgba(7, 10, 18, 0.8);
+    border-radius: 1.25rem;
+    border: 1px solid rgba(132, 151, 201, 0.35);
+    box-shadow: 0 20px 60px rgba(4, 7, 15, 0.75);
+    overflow: hidden;
+}
+
+.image-overlay img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #05070e;
+}
+
+.image-overlay__close {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 1px solid rgba(132, 151, 201, 0.45);
+    background: rgba(7, 10, 18, 0.85);
+    color: #fff;
+    font-size: 1.4rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+    z-index: 2;
+}
+
+.image-overlay__close:hover,
+.image-overlay__close:focus-visible {
+    background: rgba(91, 141, 239, 0.9);
+    border-color: rgba(91, 141, 239, 0.95);
+    outline: none;
+    transform: scale(1.05);
+}
+
+body.is-overlay-open {
+    overflow: hidden;
+    touch-action: none;
+}
+
 @media (max-width: 600px) {
     .gallery-main {
         aspect-ratio: 4 / 3;
