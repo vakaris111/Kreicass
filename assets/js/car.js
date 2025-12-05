@@ -7,12 +7,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     const descriptionEl = document.getElementById('carDescription');
     const featuresEl = document.getElementById('carFeatures');
     const specsEl = document.getElementById('carSpecs');
-    const sdkSection = document.getElementById('sdkSection');
-    const sdkCard = document.getElementById('sdkCard');
     const mainImage = document.getElementById('mainImage');
     const mainImageButton = document.getElementById('mainImageButton');
     const mainImageCounter = document.getElementById('mainImageCounter');
-    const thumbsContainer = document.getElementById('galleryThumbs');
+    const mainPrev = document.getElementById('mainPrev');
+    const mainNext = document.getElementById('mainNext');
     const galleryModal = document.getElementById('galleryModal');
     const lightboxImage = document.getElementById('lightboxImage');
     const lightboxCounter = document.getElementById('lightboxCounter');
@@ -86,15 +85,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const gallery = car.gallery && car.gallery.length ? car.gallery : ['https://placehold.co/800x500?text=MB+Kreicas'];
 
-        const markActiveThumb = (index) => {
-            if (!thumbsContainer) return;
-            thumbsContainer.querySelectorAll('button').forEach((button) => {
-                button.classList.toggle('is-active', Number(button.dataset.index) === index);
-            });
-        };
+        const wrapIndex = (index) => (gallery.length ? (index + gallery.length) % gallery.length : 0);
 
         const updateMainImage = (index) => {
-            const safeIndex = Math.max(0, Math.min(index, gallery.length - 1));
+            const safeIndex = wrapIndex(index);
             activeIndex = safeIndex;
             if (mainImage) {
                 mainImage.src = gallery[safeIndex];
@@ -103,11 +97,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (mainImageCounter) {
                 mainImageCounter.textContent = `${safeIndex + 1}/${gallery.length}`;
             }
-            markActiveThumb(safeIndex);
         };
 
         const setLightboxImage = (index) => {
-            const safeIndex = Math.max(0, Math.min(index, gallery.length - 1));
+            const safeIndex = wrapIndex(index);
             lightboxIndex = safeIndex;
             if (lightboxImage) {
                 pointerCache.clear();
@@ -150,6 +143,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (!gallery || !gallery.length) return;
             const nextIndex = (lightboxIndex + direction + gallery.length) % gallery.length;
             setLightboxImage(nextIndex);
+        };
+
+        const navigateMain = (direction) => {
+            if (!gallery || !gallery.length) return;
+            const nextIndex = wrapIndex(activeIndex + direction);
+            updateMainImage(nextIndex);
         };
 
         if (lightboxImage) {
@@ -247,24 +246,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         updateMainImage(0);
 
-        if (thumbsContainer) {
-            thumbsContainer.innerHTML = gallery
-                .map(
-                    (src, index) => `
-                        <button type="button" class="gallery-thumb${index === activeIndex ? ' is-active' : ''}" data-index="${index}" aria-label="Peržiūrėti ${index + 1} nuotrauką">
-                            <img src="${src}" alt="${car.title} miniatiūra ${index + 1}" loading="lazy" />
-                        </button>
-                    `
-                )
-                .join('');
+        if (mainPrev) {
+            mainPrev.addEventListener('click', () => navigateMain(-1));
+        }
 
-            thumbsContainer.addEventListener('click', (event) => {
-                const button = event.target.closest('button[data-index]');
-                if (!button) return;
-                const index = Number(button.dataset.index);
-                updateMainImage(index);
-                openLightbox(index);
-            });
+        if (mainNext) {
+            mainNext.addEventListener('click', () => navigateMain(1));
         }
 
         if (mainImageButton) {
@@ -313,6 +300,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             { label: 'Galia', value: car.power ? `${car.power} kW` : 'Nenurodyta' },
             { label: 'Kėbulas', value: car.body || 'Nenurodyta' },
             { label: 'Spalva', value: car.color || 'Nenurodyta' },
+            car.sdk ? { label: 'SKD kodas', value: car.sdk } : null,
             { label: 'VIN', value: car.vin || 'Pateikiama apžiūros metu' },
         ];
 
@@ -321,47 +309,19 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <div class="spec-grid">
                     ${specItems
                         .map(
-                            (item) => `
+                            (item) =>
+                                item
+                                && `
                                 <div class="spec-item">
                                     <span>${item.label}</span>
                                     <strong>${item.value}</strong>
                                 </div>
                             `
                         )
+                        .filter(Boolean)
                         .join('')}
                 </div>
             `;
-        }
-
-        if (sdkCard) {
-            sdkCard.innerHTML = `
-                <div class="sdk-card__header">
-                    <div>
-                        <p class="eyebrow">SDK</p>
-                        <h2>SDK išrašui reikalingi duomenys</h2>
-                        <p class="sdk-card__note">SKD yra šio automobilio kodas, kurį pateikiame su svarbiausia technine informacija.</p>
-                    </div>
-                    <div class="sdk-code">
-                        <span>SKD kodas</span>
-                        <strong>${car.sdk || 'Nepateikta'}</strong>
-                    </div>
-                </div>
-                <div class="spec-grid spec-grid--compact">
-                    ${specItems
-                        .map(
-                            (item) => `
-                                <div class="spec-item">
-                                    <span>${item.label}</span>
-                                    <strong>${item.value}</strong>
-                                </div>
-                            `
-                        )
-                        .join('')}
-                </div>
-            `;
-            if (sdkSection) {
-                sdkSection.hidden = false;
-            }
         }
 
         if (descriptionEl) {
