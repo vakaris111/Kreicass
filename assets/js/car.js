@@ -7,9 +7,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     const descriptionEl = document.getElementById('carDescription');
     const featuresEl = document.getElementById('carFeatures');
     const specsEl = document.getElementById('carSpecs');
+    const sdkSection = document.getElementById('sdkSection');
+    const sdkCard = document.getElementById('sdkCard');
     const mainImage = document.getElementById('mainImage');
     const mainImageButton = document.getElementById('mainImageButton');
     const mainImageCounter = document.getElementById('mainImageCounter');
+    const thumbsContainer = document.getElementById('galleryThumbs');
     const galleryModal = document.getElementById('galleryModal');
     const lightboxImage = document.getElementById('lightboxImage');
     const lightboxCounter = document.getElementById('lightboxCounter');
@@ -83,6 +86,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const gallery = car.gallery && car.gallery.length ? car.gallery : ['https://placehold.co/800x500?text=MB+Kreicas'];
 
+        const markActiveThumb = (index) => {
+            if (!thumbsContainer) return;
+            thumbsContainer.querySelectorAll('button').forEach((button) => {
+                button.classList.toggle('is-active', Number(button.dataset.index) === index);
+            });
+        };
+
         const updateMainImage = (index) => {
             const safeIndex = Math.max(0, Math.min(index, gallery.length - 1));
             activeIndex = safeIndex;
@@ -93,6 +103,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (mainImageCounter) {
                 mainImageCounter.textContent = `${safeIndex + 1}/${gallery.length}`;
             }
+            markActiveThumb(safeIndex);
         };
 
         const setLightboxImage = (index) => {
@@ -236,6 +247,26 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         updateMainImage(0);
 
+        if (thumbsContainer) {
+            thumbsContainer.innerHTML = gallery
+                .map(
+                    (src, index) => `
+                        <button type="button" class="gallery-thumb${index === activeIndex ? ' is-active' : ''}" data-index="${index}" aria-label="Peržiūrėti ${index + 1} nuotrauką">
+                            <img src="${src}" alt="${car.title} miniatiūra ${index + 1}" loading="lazy" />
+                        </button>
+                    `
+                )
+                .join('');
+
+            thumbsContainer.addEventListener('click', (event) => {
+                const button = event.target.closest('button[data-index]');
+                if (!button) return;
+                const index = Number(button.dataset.index);
+                updateMainImage(index);
+                openLightbox(index);
+            });
+        }
+
         if (mainImageButton) {
             mainImageButton.addEventListener('click', () => openLightbox(activeIndex));
         }
@@ -300,6 +331,37 @@ document.addEventListener('DOMContentLoaded', async () => {
                         .join('')}
                 </div>
             `;
+        }
+
+        if (sdkCard) {
+            sdkCard.innerHTML = `
+                <div class="sdk-card__header">
+                    <div>
+                        <p class="eyebrow">SDK</p>
+                        <h2>SDK išrašui reikalingi duomenys</h2>
+                        <p class="sdk-card__note">SKD yra šio automobilio kodas, kurį pateikiame su svarbiausia technine informacija.</p>
+                    </div>
+                    <div class="sdk-code">
+                        <span>SKD kodas</span>
+                        <strong>${car.sdk || 'Nepateikta'}</strong>
+                    </div>
+                </div>
+                <div class="spec-grid spec-grid--compact">
+                    ${specItems
+                        .map(
+                            (item) => `
+                                <div class="spec-item">
+                                    <span>${item.label}</span>
+                                    <strong>${item.value}</strong>
+                                </div>
+                            `
+                        )
+                        .join('')}
+                </div>
+            `;
+            if (sdkSection) {
+                sdkSection.hidden = false;
+            }
         }
 
         if (descriptionEl) {
