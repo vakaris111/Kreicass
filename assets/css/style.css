@@ -1109,7 +1109,7 @@ img {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: clamp(18rem, 60vh, 38rem);
+    max-height: calc(100vh - 6rem);
     overflow: hidden;
 }
 
@@ -1119,15 +1119,15 @@ img {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100%;
+    height: auto;
     max-height: min(82vh, 820px);
 }
 
 .lightbox__main img {
     width: auto;
-    height: 100%;
+    height: auto;
     max-width: min(92vw, 980px);
-    max-height: 100%;
+    max-height: min(82vh, 820px);
     border-radius: 1rem;
     object-fit: contain;
     touch-action: none;
