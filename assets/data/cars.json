@@ -22,16 +22,9 @@
       "Burmester garso sistema"
     ],
     "gallery": [
-      "https://images.unsplash.com/photo-1617813489388-7e21843ee7d1?auto=format&fit=crop&w=1600&q=80",
-      "https://images.unsplash.com/photo-1617813489605-eed9c4517c6a?auto=format&fit=crop&w=1600&q=80",
-      "https://images.unsplash.com/photo-1617813488888-834b0dacf7d1?auto=format&fit=crop&w=1600&q=80",
-      "https://source.unsplash.com/1600x1000/?mercedes,gle,gle-350d-2021&sig=1",
-      "https://source.unsplash.com/1600x1000/?mercedes,gle,gle-350d-2021&sig=2",
-      "https://source.unsplash.com/1600x1000/?mercedes,gle,gle-350d-2021&sig=3",
-      "https://source.unsplash.com/1600x1000/?mercedes,gle,gle-350d-2021&sig=4",
-      "https://source.unsplash.com/1600x1000/?mercedes,gle,gle-350d-2021&sig=5",
-      "https://source.unsplash.com/1600x1000/?mercedes,gle,gle-350d-2021&sig=6",
-      "https://source.unsplash.com/1600x1000/?mercedes,gle,gle-350d-2021&sig=7"
+      "assets/images/gle-350d-2021-1.svg",
+      "assets/images/gle-350d-2021-2.svg",
+      "assets/images/gle-350d-2021-3.svg"
     ],
     "make": "Mercedes-Benz",
     "model": "GLE 350d",
@@ -70,16 +63,9 @@
       "Harman/Kardon garso sistema"
     ],
     "gallery": [
-      "https://images.unsplash.com/photo-1555212697-194d092e3b8f?auto=format&fit=crop&w=1600&q=80",
-      "https://images.unsplash.com/photo-1549921296-3fd9238c054b?auto=format&fit=crop&w=1600&q=80",
-      "https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=1600&q=80",
-      "https://source.unsplash.com/1600x1000/?bmw,sedan,bmw-530d-2020&sig=1",
-      "https://source.unsplash.com/1600x1000/?bmw,sedan,bmw-530d-2020&sig=2",
-      "https://source.unsplash.com/1600x1000/?bmw,sedan,bmw-530d-2020&sig=3",
-      "https://source.unsplash.com/1600x1000/?bmw,sedan,bmw-530d-2020&sig=4",
-      "https://source.unsplash.com/1600x1000/?bmw,sedan,bmw-530d-2020&sig=5",
-      "https://source.unsplash.com/1600x1000/?bmw,sedan,bmw-530d-2020&sig=6",
-      "https://source.unsplash.com/1600x1000/?bmw,sedan,bmw-530d-2020&sig=7"
+      "assets/images/bmw-530d-2020-1.svg",
+      "assets/images/bmw-530d-2020-2.svg",
+      "assets/images/bmw-530d-2020-3.svg"
     ],
     "make": "BMW",
     "model": "5 serija",
@@ -118,16 +104,9 @@
       "Trečia sėdynių eilė"
     ],
     "gallery": [
-      "https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?auto=format&fit=crop&w=1600&q=80",
-      "https://images.unsplash.com/photo-1518557981624-97600f2a1fc7?auto=format&fit=crop&w=1600&q=80",
-      "https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?auto=format&fit=crop&w=1600&q=80",
-      "https://source.unsplash.com/1600x1000/?audi,q7,audi-q7-2019&sig=1",
-      "https://source.unsplash.com/1600x1000/?audi,q7,audi-q7-2019&sig=2",
-      "https://source.unsplash.com/1600x1000/?audi,q7,audi-q7-2019&sig=3",
-      "https://source.unsplash.com/1600x1000/?audi,q7,audi-q7-2019&sig=4",
-      "https://source.unsplash.com/1600x1000/?audi,q7,audi-q7-2019&sig=5",
-      "https://source.unsplash.com/1600x1000/?audi,q7,audi-q7-2019&sig=6",
-      "https://source.unsplash.com/1600x1000/?audi,q7,audi-q7-2019&sig=7"
+      "assets/images/audi-q7-2019-1.svg",
+      "assets/images/audi-q7-2019-2.svg",
+      "assets/images/audi-q7-2019-3.svg"
     ],
     "make": "Audi",
     "model": "Q7",
@@ -166,16 +145,9 @@
       "Skaitmeninis prietaisų skydelis"
     ],
     "gallery": [
-      "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1600&q=80",
-      "https://images.unsplash.com/photo-1493238792000-8113da705763?auto=format&fit=crop&w=1600&q=80",
-      "https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?auto=format&fit=crop&w=1600&q=80",
-      "https://source.unsplash.com/1600x1000/?volkswagen,tiguan,vw-tiguan-2018&sig=1",
-      "https://source.unsplash.com/1600x1000/?volkswagen,tiguan,vw-tiguan-2018&sig=2",
-      "https://source.unsplash.com/1600x1000/?volkswagen,tiguan,vw-tiguan-2018&sig=3",
-      "https://source.unsplash.com/1600x1000/?volkswagen,tiguan,vw-tiguan-2018&sig=4",
-      "https://source.unsplash.com/1600x1000/?volkswagen,tiguan,vw-tiguan-2018&sig=5",
-      "https://source.unsplash.com/1600x1000/?volkswagen,tiguan,vw-tiguan-2018&sig=6",
-      "https://source.unsplash.com/1600x1000/?volkswagen,tiguan,vw-tiguan-2018&sig=7"
+      "assets/images/vw-tiguan-2018-1.svg",
+      "assets/images/vw-tiguan-2018-2.svg",
+      "assets/images/vw-tiguan-2018-3.svg"
     ],
     "make": "Volkswagen",
     "model": "Tiguan",
@@ -214,16 +186,9 @@
       "Bevielis telefono kroviklis"
     ],
     "gallery": [
-      "https://images.unsplash.com/photo-1523987355523-c7b5b84f7080?auto=format&fit=crop&w=1600&q=80",
-      "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=1600&q=80",
-      "https://images.unsplash.com/photo-1553440569-bcc63803a83d?auto=format&fit=crop&w=1600&q=80",
-      "https://source.unsplash.com/1600x1000/?toyota,rav4,toyota-rav4-2022&sig=1",
-      "https://source.unsplash.com/1600x1000/?toyota,rav4,toyota-rav4-2022&sig=2",
-      "https://source.unsplash.com/1600x1000/?toyota,rav4,toyota-rav4-2022&sig=3",
-      "https://source.unsplash.com/1600x1000/?toyota,rav4,toyota-rav4-2022&sig=4",
-      "https://source.unsplash.com/1600x1000/?toyota,rav4,toyota-rav4-2022&sig=5",
-      "https://source.unsplash.com/1600x1000/?toyota,rav4,toyota-rav4-2022&sig=6",
-      "https://source.unsplash.com/1600x1000/?toyota,rav4,toyota-rav4-2022&sig=7"
+      "assets/images/toyota-rav4-2022-1.svg",
+      "assets/images/toyota-rav4-2022-2.svg",
+      "assets/images/toyota-rav4-2022-3.svg"
     ],
     "make": "Toyota",
     "model": "RAV4",
@@ -262,16 +227,9 @@
       "Prisitaikantis LED apšvietimas"
     ],
     "gallery": [
-      "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=1600&q=80",
-      "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1600&q=80",
-      "https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?auto=format&fit=crop&w=1600&q=80",
-      "https://source.unsplash.com/1600x1000/?volvo,xc60,volvo-xc60-2017&sig=1",
-      "https://source.unsplash.com/1600x1000/?volvo,xc60,volvo-xc60-2017&sig=2",
-      "https://source.unsplash.com/1600x1000/?volvo,xc60,volvo-xc60-2017&sig=3",
-      "https://source.unsplash.com/1600x1000/?volvo,xc60,volvo-xc60-2017&sig=4",
-      "https://source.unsplash.com/1600x1000/?volvo,xc60,volvo-xc60-2017&sig=5",
-      "https://source.unsplash.com/1600x1000/?volvo,xc60,volvo-xc60-2017&sig=6",
-      "https://source.unsplash.com/1600x1000/?volvo,xc60,volvo-xc60-2017&sig=7"
+      "assets/images/volvo-xc60-2017-1.svg",
+      "assets/images/volvo-xc60-2017-2.svg",
+      "assets/images/volvo-xc60-2017-3.svg"
     ],
     "make": "Volvo",
     "model": "XC60",
@@ -310,16 +268,9 @@
       "12 garsiakalbių JBL sistema"
     ],
     "gallery": [
-      "https://images.unsplash.com/photo-1614249134661-1e7f980f7a29?auto=format&fit=crop&w=1600&q=80",
-      "https://images.unsplash.com/photo-1614249135077-b22e130c5bc2?auto=format&fit=crop&w=1600&q=80",
-      "https://images.unsplash.com/photo-1614249134816-c852c7be1f83?auto=format&fit=crop&w=1600&q=80",
-      "https://source.unsplash.com/1600x1000/?kia,sportage,kia-sportage-2023&sig=1",
-      "https://source.unsplash.com/1600x1000/?kia,sportage,kia-sportage-2023&sig=2",
-      "https://source.unsplash.com/1600x1000/?kia,sportage,kia-sportage-2023&sig=3",
-      "https://source.unsplash.com/1600x1000/?kia,sportage,kia-sportage-2023&sig=4",
-      "https://source.unsplash.com/1600x1000/?kia,sportage,kia-sportage-2023&sig=5",
-      "https://source.unsplash.com/1600x1000/?kia,sportage,kia-sportage-2023&sig=6",
-      "https://source.unsplash.com/1600x1000/?kia,sportage,kia-sportage-2023&sig=7"
+      "assets/images/kia-sportage-2023-1.svg",
+      "assets/images/kia-sportage-2023-2.svg",
+      "assets/images/kia-sportage-2023-3.svg"
     ],
     "make": "Kia",
     "model": "Sportage",
@@ -358,16 +309,9 @@
       "Elektrinis bagažinės dangtis"
     ],
     "gallery": [
-      "https://images.unsplash.com/photo-1483721310020-03333e577078?auto=format&fit=crop&w=1600&q=80",
-      "https://images.unsplash.com/photo-1523987355523-c7b5b84f7080?auto=format&fit=crop&w=1600&q=80",
-      "https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?auto=format&fit=crop&w=1600&q=80",
-      "https://source.unsplash.com/1600x1000/?ford,mondeo,ford-mondeo-2016&sig=1",
-      "https://source.unsplash.com/1600x1000/?ford,mondeo,ford-mondeo-2016&sig=2",
-      "https://source.unsplash.com/1600x1000/?ford,mondeo,ford-mondeo-2016&sig=3",
-      "https://source.unsplash.com/1600x1000/?ford,mondeo,ford-mondeo-2016&sig=4",
-      "https://source.unsplash.com/1600x1000/?ford,mondeo,ford-mondeo-2016&sig=5",
-      "https://source.unsplash.com/1600x1000/?ford,mondeo,ford-mondeo-2016&sig=6",
-      "https://source.unsplash.com/1600x1000/?ford,mondeo,ford-mondeo-2016&sig=7"
+      "assets/images/ford-mondeo-2016-1.svg",
+      "assets/images/ford-mondeo-2016-2.svg",
+      "assets/images/ford-mondeo-2016-3.svg"
     ],
     "make": "Ford",
     "model": "Mondeo",
@@ -406,16 +350,9 @@
       "Premium garso sistema"
     ],
     "gallery": [
-      "https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?auto=format&fit=crop&w=1600&q=80",
-      "https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?auto=format&fit=crop&w=1600&q=80",
-      "https://images.unsplash.com/photo-1471444928139-48c5bf5173b7?auto=format&fit=crop&w=1600&q=80",
-      "https://source.unsplash.com/1600x1000/?car,honda-crv-2015&sig=1",
-      "https://source.unsplash.com/1600x1000/?car,honda-crv-2015&sig=2",
-      "https://source.unsplash.com/1600x1000/?car,honda-crv-2015&sig=3",
-      "https://source.unsplash.com/1600x1000/?car,honda-crv-2015&sig=4",
-      "https://source.unsplash.com/1600x1000/?car,honda-crv-2015&sig=5",
-      "https://source.unsplash.com/1600x1000/?car,honda-crv-2015&sig=6",
-      "https://source.unsplash.com/1600x1000/?car,honda-crv-2015&sig=7"
+      "assets/images/honda-crv-2015-1.svg",
+      "assets/images/honda-crv-2015-2.svg",
+      "assets/images/honda-crv-2015-3.svg"
     ],
     "make": "Honda",
     "model": "CR-V",
@@ -454,16 +391,9 @@
       "Park Assist"
     ],
     "gallery": [
-      "https://images.unsplash.com/photo-1583267746897-2f6f4d90c1c7?auto=format&fit=crop&w=1600&q=80",
-      "https://images.unsplash.com/photo-1542365887-47ef1c4c3d29?auto=format&fit=crop&w=1600&q=80",
-      "https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?auto=format&fit=crop&w=1600&q=80",
-      "https://source.unsplash.com/1600x1000/?car,skoda-superb-2019&sig=1",
-      "https://source.unsplash.com/1600x1000/?car,skoda-superb-2019&sig=2",
-      "https://source.unsplash.com/1600x1000/?car,skoda-superb-2019&sig=3",
-      "https://source.unsplash.com/1600x1000/?car,skoda-superb-2019&sig=4",
-      "https://source.unsplash.com/1600x1000/?car,skoda-superb-2019&sig=5",
-      "https://source.unsplash.com/1600x1000/?car,skoda-superb-2019&sig=6",
-      "https://source.unsplash.com/1600x1000/?car,skoda-superb-2019&sig=7"
+      "assets/images/skoda-superb-2019-1.svg",
+      "assets/images/skoda-superb-2019-2.svg",
+      "assets/images/skoda-superb-2019-3.svg"
     ],
     "make": "Škoda",
     "model": "Superb",
@@ -502,16 +432,9 @@
       "Aukštos kokybės stiklo stogas"
     ],
     "gallery": [
-      "https://images.unsplash.com/photo-1549924244-441377ff0491?auto=format&fit=crop&w=1600&q=80",
-      "https://images.unsplash.com/photo-1549923746-c502d488b3ea?auto=format&fit=crop&w=1600&q=80",
-      "https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?auto=format&fit=crop&w=1600&q=80",
-      "https://source.unsplash.com/1600x1000/?tesla,model3,tesla-model3-2021&sig=1",
-      "https://source.unsplash.com/1600x1000/?tesla,model3,tesla-model3-2021&sig=2",
-      "https://source.unsplash.com/1600x1000/?tesla,model3,tesla-model3-2021&sig=3",
-      "https://source.unsplash.com/1600x1000/?tesla,model3,tesla-model3-2021&sig=4",
-      "https://source.unsplash.com/1600x1000/?tesla,model3,tesla-model3-2021&sig=5",
-      "https://source.unsplash.com/1600x1000/?tesla,model3,tesla-model3-2021&sig=6",
-      "https://source.unsplash.com/1600x1000/?tesla,model3,tesla-model3-2021&sig=7"
+      "assets/images/tesla-model3-2021-1.svg",
+      "assets/images/tesla-model3-2021-2.svg",
+      "assets/images/tesla-model3-2021-3.svg"
     ],
     "make": "Tesla",
     "model": "Model 3",

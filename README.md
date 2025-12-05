@@ -17,5 +17,12 @@ Vieno puslapio (SPA stiliaus) svetainių rinkinys, sukurtas pristatyti naudotus 
 ## Pritaikymas mobiliesiems
 Svetainė kurta „mobile-first“ principu, naudojant šiuolaikinius CSS (flex/grid) sprendimus ir animuotas sąsajas.
 
+## Nuosavų nuotraukų naudojimas
+Jei nenorite viešai talpinti nuotraukų pas trečiąsias šalis, jas galite laikyti pačiame projekte:
+
+1. Sukurkite katalogą `assets/images/` (jei jo dar nėra) ir įkelkite savo JPEG/PNG/SVG failus. Saugaus demonstravimo tikslu projekte jau yra sugeneruoti vietiniai SVG „placeholderiai“ kiekvienam automobiliui (`assets/images/*-1.svg` ir t. t.).
+2. `assets/data/cars.json` faile kiekvieno automobilio `gallery` masyve nurodykite santykinius kelius iki failų, pvz. `"assets/images/gle-350d/priekis.jpg"`.
+3. Paleidus svetainę per statinį serverį, naršyklė rodys jūsų vietoje laikomas nuotraukas. Failai gali būti saugomi lokaliai arba serveryje kartu su likusia svetaine – atskiro viešo hostingo nereikia.
+
 ## Licencija
 Projektas pateikiamas demonstraciniais tikslais.
