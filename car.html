@@ -39,21 +39,20 @@
             <div class="container car-details" id="carDetails">
                 <div class="gallery">
                     <div class="gallery-main">
+                        <button type="button" class="gallery-nav gallery-nav--prev" id="mainPrev" aria-label="Ankstesnė nuotrauka">
+                            <span aria-hidden="true">‹</span>
+                        </button>
                         <button type="button" class="gallery-main__button" id="mainImageButton">
                             <img id="mainImage" src="" alt="Automobilio nuotrauka" />
                             <span class="gallery-main__counter" id="mainImageCounter"></span>
                             <span class="gallery-main__zoom" aria-hidden="true">Padidinti</span>
                         </button>
+                        <button type="button" class="gallery-nav gallery-nav--next" id="mainNext" aria-label="Kita nuotrauka">
+                            <span aria-hidden="true">›</span>
+                        </button>
                     </div>
-                    <div class="gallery-thumbs" id="galleryThumbs" aria-label="Automobilio nuotraukų peržiūra"></div>
                 </div>
                 <div class="car-specs" id="carSpecs"></div>
-            </div>
-        </section>
-
-        <section class="section" id="sdkSection" hidden>
-            <div class="container">
-                <div class="sdk-card" id="sdkCard"></div>
             </div>
         </section>
 
