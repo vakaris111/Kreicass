@@ -42,11 +42,10 @@
                         <button type="button" class="gallery-nav gallery-nav--prev" id="mainPrev" aria-label="Ankstesnė nuotrauka">
                             <span aria-hidden="true">‹</span>
                         </button>
-                        <button type="button" class="gallery-main__button" id="mainImageButton">
+                        <div class="gallery-main__frame">
                             <img id="mainImage" src="" alt="Automobilio nuotrauka" />
                             <span class="gallery-main__counter" id="mainImageCounter"></span>
-                            <span class="gallery-main__zoom" aria-hidden="true">Padidinti</span>
-                        </button>
+                        </div>
                         <button type="button" class="gallery-nav gallery-nav--next" id="mainNext" aria-label="Kita nuotrauka">
                             <span aria-hidden="true">›</span>
                         </button>
@@ -63,24 +62,6 @@
         <section class="section">
             <div class="container" id="carFeatures"></div>
         </section>
-        <div class="lightbox" id="galleryModal" hidden>
-            <div class="lightbox__backdrop" data-close></div>
-            <div class="lightbox__inner" role="dialog" aria-modal="true" aria-label="Automobilio nuotraukų galerija">
-                <button class="lightbox__close" type="button" data-close aria-label="Uždaryti galeriją">&times;</button>
-                <div class="lightbox__main">
-                    <button class="lightbox__nav lightbox__nav--prev" type="button" id="lightboxPrev" aria-label="Ankstesnė nuotrauka">
-                        <span aria-hidden="true">‹</span>
-                    </button>
-                    <div class="lightbox__image-wrapper">
-                        <img id="lightboxImage" src="" alt="Automobilio nuotrauka dideliame lange" />
-                        <span class="lightbox__counter" id="lightboxCounter"></span>
-                    </div>
-                    <button class="lightbox__nav lightbox__nav--next" type="button" id="lightboxNext" aria-label="Kita nuotrauka">
-                        <span aria-hidden="true">›</span>
-                    </button>
-                </div>
-            </div>
-        </div>
     </main>
 
     <footer class="footer">
