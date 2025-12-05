@@ -1118,13 +1118,16 @@ img {
     width: 100%;
     display: flex;
     justify-content: center;
+    align-items: center;
+    height: 100%;
+    max-height: min(82vh, 820px);
 }
 
 .lightbox__main img {
-    width: 100%;
-    height: auto;
+    width: auto;
+    height: 100%;
     max-width: min(92vw, 980px);
-    max-height: min(82vh, 780px);
+    max-height: 100%;
     border-radius: 1rem;
     object-fit: contain;
     touch-action: none;
