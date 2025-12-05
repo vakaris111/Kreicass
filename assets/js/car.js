@@ -300,7 +300,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             { label: 'Galia', value: car.power ? `${car.power} kW` : 'Nenurodyta' },
             { label: 'Kėbulas', value: car.body || 'Nenurodyta' },
             { label: 'Spalva', value: car.color || 'Nenurodyta' },
-            car.sdk ? { label: 'SKD kodas', value: car.sdk } : null,
+            car.sdk ? { label: 'SDK kodas', value: car.sdk } : null,
             { label: 'VIN', value: car.vin || 'Pateikiama apžiūros metu' },
         ];
 
