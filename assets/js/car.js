@@ -63,6 +63,31 @@ document.addEventListener('DOMContentLoaded', async () => {
             const prevButton = overlay.querySelector('.image-overlay__nav--prev');
             const nextButton = overlay.querySelector('.image-overlay__nav--next');
 
+            const pointerCache = new Map();
+            let imageScale = 1;
+            let baseScale = 1;
+            let startDistance = 0;
+
+            const getDistance = () => {
+                if (pointerCache.size < 2) return 0;
+                const [p1, p2] = Array.from(pointerCache.values());
+                return Math.hypot(p1.x - p2.x, p1.y - p2.y);
+            };
+
+            const updateZoomState = (scale = 1) => {
+                const clamped = Math.min(3, Math.max(1, scale));
+                imageScale = clamped;
+                overlayImage?.style.setProperty('--image-scale', clamped.toString());
+                overlay.classList.toggle('is-zoomed', clamped > 1.02);
+            };
+
+            const resetZoom = () => {
+                pointerCache.clear();
+                startDistance = 0;
+                baseScale = 1;
+                updateZoomState(1);
+            };
+
             const setImage = (index) => {
                 const safeIndex = wrapIndex(index);
                 activeIndex = safeIndex;
@@ -74,6 +99,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (overlayCounter) {
                     overlayCounter.textContent = `${safeIndex + 1}/${images.length}`;
                 }
+                resetZoom();
             };
 
             const closeOverlay = () => {
@@ -110,8 +136,47 @@ document.addEventListener('DOMContentLoaded', async () => {
             overlay.querySelector('.image-overlay__close')?.addEventListener('click', closeOverlay);
             prevButton?.addEventListener('click', () => setImage(activeIndex - 1));
             nextButton?.addEventListener('click', () => setImage(activeIndex + 1));
+
             overlayImage?.addEventListener('click', () => {
-                overlay.classList.toggle('is-zoomed');
+                if (pointerCache.size) return;
+                const targetScale = imageScale > 1 ? 1 : 1.5;
+                updateZoomState(targetScale);
+            });
+
+            overlayImage?.addEventListener('pointerdown', (event) => {
+                overlayImage.setPointerCapture(event.pointerId);
+                pointerCache.set(event.pointerId, { x: event.clientX, y: event.clientY });
+                if (pointerCache.size === 2) {
+                    startDistance = getDistance();
+                    baseScale = imageScale;
+                }
+            });
+
+            overlayImage?.addEventListener('pointermove', (event) => {
+                if (!pointerCache.has(event.pointerId)) return;
+                pointerCache.set(event.pointerId, { x: event.clientX, y: event.clientY });
+
+                if (pointerCache.size === 2 && startDistance > 0) {
+                    const distance = getDistance();
+                    if (distance) {
+                        const nextScale = baseScale * (distance / startDistance);
+                        updateZoomState(nextScale);
+                    }
+                }
+            });
+
+            ['pointerup', 'pointercancel', 'pointerleave'].forEach((eventName) => {
+                overlayImage?.addEventListener(eventName, (event) => {
+                    pointerCache.delete(event.pointerId);
+
+                    if (pointerCache.size < 2) {
+                        startDistance = 0;
+                        baseScale = imageScale;
+                        if (imageScale <= 1.02) {
+                            resetZoom();
+                        }
+                    }
+                });
             });
 
             document.addEventListener('keydown', handleKeydown);
