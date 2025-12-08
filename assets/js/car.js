@@ -14,6 +14,22 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     let activeIndex = 0;
 
+    const formatNumber = (value, suffix = '') => {
+        const number = Number(value);
+        if (Number.isFinite(number)) {
+            return `${new Intl.NumberFormat('lt-LT').format(number)}${suffix}`;
+        }
+        return value ? `${value}${suffix}` : `Nenurodyta${suffix}`;
+    };
+
+    const formatPrice = (value) => {
+        const number = Number(value);
+        if (Number.isFinite(number)) {
+            return `${new Intl.NumberFormat('lt-LT').format(number)} €`;
+        }
+        return value ? `${value} €` : 'Kaina nenurodyta';
+    };
+
     if (!slug || !window.CarData) {
         if (subtitleEl) subtitleEl.textContent = 'Automobilis nerastas.';
         return;
@@ -28,7 +44,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         if (titleEl) titleEl.textContent = car.title;
-        if (subtitleEl) subtitleEl.textContent = `${car.year} m. | ${car.mileage.toLocaleString('lt-LT')} km | ${car.fuel}`;
+        if (subtitleEl) subtitleEl.textContent = `${car.year || 'Metai nenurodyti'} m. | ${formatNumber(car.mileage, ' km')} | ${car.fuel || 'Kuro tipas nenurodytas'}`;
 
         const gallery = car.gallery && car.gallery.length ? car.gallery : ['https://placehold.co/800x500?text=MB+Kreicas'];
 
@@ -225,9 +241,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         const specItems = [
-            { label: 'Kaina', value: `${car.price.toLocaleString('lt-LT')} €` },
+            { label: 'Kaina', value: formatPrice(car.price) },
             { label: 'Metai', value: car.year },
-            { label: 'Rida', value: `${car.mileage.toLocaleString('lt-LT')} km` },
+            { label: 'Rida', value: formatNumber(car.mileage, ' km') },
             { label: 'Markė', value: car.make || 'Nenurodyta' },
             { label: 'Modelis', value: car.model || car.title || 'Nenurodyta' },
             { label: 'Kuro tipas', value: car.fuel },

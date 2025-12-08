@@ -1,15 +1,28 @@
+const formatNumber = (value, options = {}) => {
+    const number = Number(value);
+    if (Number.isFinite(number)) {
+        return new Intl.NumberFormat('lt-LT', options).format(number);
+    }
+    return value || 'Nenurodyta';
+};
+
+const formatPrice = (price) => {
+    const formatted = formatNumber(price);
+    return Number.isFinite(Number(price)) ? `${formatted} €` : formatted;
+};
+
 const createCarCard = (car) => `
     <article class="car-card">
         <a href="car.html?slug=${encodeURIComponent(car.slug)}">
             <div class="car-card__body">
                 <h3 class="car-card__title">${car.title}</h3>
-                <p class="car-card__price">${car.price.toLocaleString('lt-LT')} €</p>
+                <p class="car-card__price">${formatPrice(car.price)}</p>
                 <div class="car-card__meta">
-                    <span>${car.year} m.</span>
-                    <span>${car.mileage.toLocaleString('lt-LT')} km</span>
-                    <span>${car.body}</span>
-                    <span>${car.fuel}</span>
-                    <span>${car.transmission}</span>
+                    <span>${car.year || 'Nenurodyta'} m.</span>
+                    <span>${formatNumber(car.mileage)} km</span>
+                    <span>${car.body || 'Kėbulo tipas nenurodytas'}</span>
+                    <span>${car.fuel || 'Kuro tipas nenurodytas'}</span>
+                    <span>${car.transmission || 'Pavarų dėžė nenurodyta'}</span>
                 </div>
             </div>
         </a>
