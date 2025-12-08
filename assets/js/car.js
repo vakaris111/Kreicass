@@ -228,19 +228,31 @@ document.addEventListener('DOMContentLoaded', async () => {
             { label: 'Kaina', value: `${car.price.toLocaleString('lt-LT')} €` },
             { label: 'Metai', value: car.year },
             { label: 'Rida', value: `${car.mileage.toLocaleString('lt-LT')} km` },
-            { label: 'Kuras', value: car.fuel },
+            { label: 'Markė', value: car.make || 'Nenurodyta' },
+            { label: 'Modelis', value: car.model || car.title || 'Nenurodyta' },
+            { label: 'Kuro tipas', value: car.fuel },
             { label: 'Pavarų dėžė', value: car.transmission },
             { label: 'Varantieji ratai', value: car.drivetrain || 'Nenurodyta' },
             { label: 'Galia', value: car.power ? `${car.power} kW` : 'Nenurodyta' },
+            { label: 'Variklis', value: car.engine || 'Nenurodyta' },
             { label: 'Kėbulas', value: car.body || 'Nenurodyta' },
-            { label: 'Spalva', value: car.color || 'Nenurodyta' },
+            { label: 'Ratlankių dydis', value: car.wheelSize || 'Nenurodyta' },
+            { label: 'Durų skaičius', value: car.doors || 'Nenurodyta' },
+            { label: 'Sėdimos vietos', value: car.seats || 'Nenurodyta' },
+            { label: 'Klimato kontrolė', value: car.climateControl || 'Nenurodyta' },
+            { label: 'Pirmoji registracija', value: car.firstRegistration || 'Nenurodyta' },
+            { label: 'Techninė apžiūra', value: car.inspectionUntil || 'Nenurodyta' },
+            { label: 'Registracijos šalis', value: car.registrationCountry || 'Nenurodyta' },
+            { label: 'Vairas', value: car.steering || 'Nenurodyta' },
+            { label: 'Svoris', value: car.weight ? `${car.weight} kg` : 'Nenurodyta' },
+            { label: 'CO₂ emisija', value: car.co2 || 'Nenurodyta' },
             car.sdk ? { label: 'SDK kodas', value: car.sdk } : null,
             { label: 'VIN', value: car.vin || 'Pateikiama apžiūros metu' },
         ];
 
         if (specsEl) {
             specsEl.innerHTML = `
-                <div class="spec-grid">
+                <div class="spec-grid spec-grid--compact" aria-label="Automobilio duomenys">
                     ${specItems
                         .map(
                             (item) =>
