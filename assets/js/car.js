@@ -225,22 +225,32 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         const specItems = [
-            { label: 'Kaina', value: `${car.price.toLocaleString('lt-LT')} €` },
-            { label: 'Metai', value: car.year },
+            { label: 'Markė', value: car.make || 'Nenurodyta' },
+            { label: 'Modelis', value: car.model || car.title || 'Nenurodyta' },
+            { label: 'Pirmoji registracija', value: car.firstRegistration || 'Nenurodyta' },
+            { label: 'Variklis', value: car.engine || 'Nenurodyta' },
+            { label: 'Kėbulas', value: car.body || 'Nenurodyta' },
+            { label: 'Durų skaičius', value: car.doors || 'Nenurodyta' },
+            { label: 'Vairas', value: car.steering || 'Nenurodyta' },
+            { label: 'Techninė apžiūra iki', value: car.inspectionUntil || 'Nenurodyta' },
+            { label: 'Sėdimos vietos', value: car.seats || 'Nenurodyta' },
+            { label: 'Svoris', value: car.weight ? `${car.weight} kg` : 'Nenurodyta' },
             { label: 'Rida', value: `${car.mileage.toLocaleString('lt-LT')} km` },
-            { label: 'Kuras', value: car.fuel },
+            { label: 'Metai', value: car.year },
+            { label: 'Kuro tipas', value: car.fuel },
             { label: 'Pavarų dėžė', value: car.transmission },
             { label: 'Varantieji ratai', value: car.drivetrain || 'Nenurodyta' },
             { label: 'Galia', value: car.power ? `${car.power} kW` : 'Nenurodyta' },
-            { label: 'Kėbulas', value: car.body || 'Nenurodyta' },
-            { label: 'Spalva', value: car.color || 'Nenurodyta' },
+            { label: 'CO₂ emisija', value: car.co2 || 'Nenurodyta' },
+            { label: 'Registracijos šalis', value: car.registrationCountry || 'Nenurodyta' },
             car.sdk ? { label: 'SDK kodas', value: car.sdk } : null,
             { label: 'VIN', value: car.vin || 'Pateikiama apžiūros metu' },
+            { label: 'Kaina', value: `${car.price.toLocaleString('lt-LT')} €` },
         ];
 
         if (specsEl) {
             specsEl.innerHTML = `
-                <div class="spec-grid">
+                <div class="spec-grid spec-grid--compact" aria-label="Automobilio duomenys">
                     ${specItems
                         .map(
                             (item) =>
