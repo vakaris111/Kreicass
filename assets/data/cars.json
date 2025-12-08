@@ -38,7 +38,8 @@
     "seats": "5",
     "registrationCountry": "Vokietija",
     "sdk": "MBGLE350D",
-    "co2": "212 g/km"
+    "co2": "212 g/km",
+    "wheelSize": "R20"
   },
   {
     "id": "bmw-530d-2020",
@@ -79,7 +80,8 @@
     "seats": "5",
     "registrationCountry": "Vokietija",
     "sdk": "BMW530D2020",
-    "co2": "161 g/km"
+    "co2": "161 g/km",
+    "wheelSize": "R19"
   },
   {
     "id": "audi-q7-2019",
@@ -120,7 +122,8 @@
     "seats": "7",
     "registrationCountry": "Vokietija",
     "sdk": "AUDIQ72019",
-    "co2": "199 g/km"
+    "co2": "199 g/km",
+    "wheelSize": "R20"
   },
   {
     "id": "vw-tiguan-2018",
@@ -161,7 +164,8 @@
     "seats": "5",
     "registrationCountry": "Lietuva",
     "sdk": "VWTIG2018",
-    "co2": "149 g/km"
+    "co2": "149 g/km",
+    "wheelSize": "R19"
   },
   {
     "id": "toyota-rav4-2022",
@@ -202,7 +206,8 @@
     "seats": "5",
     "registrationCountry": "Lietuva",
     "sdk": "RAV4H2022",
-    "co2": "132 g/km"
+    "co2": "132 g/km",
+    "wheelSize": "R18"
   },
   {
     "id": "volvo-xc60-2017",
@@ -243,7 +248,8 @@
     "seats": "5",
     "registrationCountry": "Švedija",
     "sdk": "VOLXC602017",
-    "co2": "154 g/km"
+    "co2": "154 g/km",
+    "wheelSize": "R19"
   },
   {
     "id": "kia-sportage-2023",
@@ -284,7 +290,8 @@
     "seats": "5",
     "registrationCountry": "Lietuva",
     "sdk": "KIASP23",
-    "co2": "132 g/km"
+    "co2": "132 g/km",
+    "wheelSize": "R19"
   },
   {
     "id": "ford-mondeo-2016",
@@ -325,7 +332,8 @@
     "seats": "5",
     "registrationCountry": "Lietuva",
     "sdk": "FMON2016",
-    "co2": "124 g/km"
+    "co2": "124 g/km",
+    "wheelSize": "R17"
   },
   {
     "id": "honda-crv-2015",
@@ -366,7 +374,8 @@
     "seats": "5",
     "registrationCountry": "Lietuva",
     "sdk": "HNCRV2015",
-    "co2": "159 g/km"
+    "co2": "159 g/km",
+    "wheelSize": "R18"
   },
   {
     "id": "skoda-superb-2019",
@@ -407,7 +416,8 @@
     "seats": "5",
     "registrationCountry": "Čekija",
     "sdk": "SKSUP2019",
-    "co2": "148 g/km"
+    "co2": "148 g/km",
+    "wheelSize": "R18"
   },
   {
     "id": "tesla-model3-2021",
@@ -448,6 +458,49 @@
     "seats": "5",
     "registrationCountry": "Nyderlandai",
     "sdk": "TSLMDL3",
-    "co2": "0 g/km"
+    "co2": "0 g/km",
+    "wheelSize": "R19"
+  },
+  {
+    "id": "seat-ibiza-2013",
+    "slug": "seat-ibiza-2013",
+    "title": "Seat Ibiza 1.2l",
+    "price": 3400,
+    "year": 2013,
+    "mileage": 240523,
+    "fuel": "Dyzelinas",
+    "transmission": "Mechaninė",
+    "drivetrain": "Priekiniai",
+    "power": 55,
+    "body": "Universalas",
+    "color": "Balta",
+    "vin": "**********************",
+    "description": "M Sport komplektacija su komforto paketais, lazeriniais žibintais ir HUD. Automobilis importuotas iš Vokietijos, atliktas pilnas techninis patikrinimas.",
+    "features": [
+      "M Sport apdaila",
+      "Adaptinis kruizo kontrolė",
+      "Head-Up ekranas",
+      "Šildomos ir vėdinamos sėdynės",
+      "Harman/Kardon garso sistema"
+    ],
+    "gallery": [
+      "assets/images/IMG-7f791b2bf81a8bae0694956aa965b3fd-V.jpg",
+      "assets/images/New folder (7)/IMG-7f791b2bf81a8bae0694956aa965b3fd-V.jpg",
+      "assets/images/439127644_13822562292_1756194573866.png"
+    ],
+    "make": "Seat",
+    "model": "Ibiza",
+    "firstRegistration": "2013-05",
+    "engine": "1200 cm³, 75 AG (55 kW)",
+    "doors": "4/5",
+    "climateControl": "Dviguba klimato kontrolė",
+    "steering": "Dešinėje",
+    "inspectionUntil": "2025-04",
+    "weight": "1750",
+    "seats": "5",
+    "registrationCountry": "Vokietija",
+    "sdk": "KRTNNHAR",
+    "co2": "~99 g/km",
+    "wheelSize": "R15"
   }
 ]
