@@ -1,7 +1,19 @@
 (function () {
-    const STORAGE_KEY = 'mbk_cars_v1';
+    const STORAGE_KEY = 'mbk_cars_v2';
+    const STORAGE_VERSION = '2024-10-05';
+    const LEGACY_KEYS = ['mbk_cars_v1'];
     let cache = null;
     let dataSource = null;
+
+    const clearLegacyStorage = () => {
+        LEGACY_KEYS.forEach((key) => {
+            try {
+                window.localStorage.removeItem(key);
+            } catch (error) {
+                console.warn('Nepavyko pašalinti senos saugyklos:', error);
+            }
+        });
+    };
 
     const fetchDefaults = async () => {
         const response = await fetch('assets/data/cars.json');
@@ -67,8 +79,22 @@
             const raw = window.localStorage.getItem(STORAGE_KEY);
             if (!raw) return null;
             const parsed = JSON.parse(raw);
-            if (!Array.isArray(parsed)) throw new Error('Blogas formatas');
-            return parsed;
+
+            if (Array.isArray(parsed)) {
+                // Ankstesnės versijos be metaduomenų
+                return parsed;
+            }
+
+            if (
+                parsed
+                && typeof parsed === 'object'
+                && Array.isArray(parsed.cars)
+                && (!parsed.version || parsed.version === STORAGE_VERSION)
+            ) {
+                return parsed.cars;
+            }
+
+            return null;
         } catch (error) {
             console.warn('Nepavyko nuskaityti automobilių iš saugyklos:', error);
             return null;
@@ -77,7 +103,10 @@
 
     const writeToStorage = (cars) => {
         try {
-            window.localStorage.setItem(STORAGE_KEY, JSON.stringify(cars));
+            window.localStorage.setItem(
+                STORAGE_KEY,
+                JSON.stringify({ version: STORAGE_VERSION, cars }),
+            );
         } catch (error) {
             console.warn('Nepavyko išsaugoti automobilių:', error);
         }
@@ -109,6 +138,8 @@
         if (forceRemote) {
             cache = null;
         }
+
+        clearLegacyStorage();
 
         if (window.RemoteSync && window.RemoteSync.isEnabled()) {
             const remote = await tryFetchRemote();
