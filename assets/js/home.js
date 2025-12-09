@@ -11,23 +11,30 @@ const formatPrice = (price) => {
     return Number.isFinite(Number(price)) ? `${formatted} €` : formatted;
 };
 
-const createCarCard = (car) => `
-    <article class="car-card">
-        <a href="car.html?slug=${encodeURIComponent(car.slug)}">
-            <div class="car-card__body">
-                <h3 class="car-card__title">${car.title}</h3>
-                <p class="car-card__price">${formatPrice(car.price)}</p>
-                <div class="car-card__meta">
-                    <span>${car.year || 'Nenurodyta'} m.</span>
-                    <span>${formatNumber(car.mileage)} km</span>
-                    <span>${car.body || 'Kėbulo tipas nenurodytas'}</span>
-                    <span>${car.fuel || 'Kuro tipas nenurodytas'}</span>
-                    <span>${car.transmission || 'Pavarų dėžė nenurodyta'}</span>
+const createCarCard = (car) => {
+    const cover = (car.gallery && car.gallery.length && car.gallery[0]) || 'https://placehold.co/600x400?text=MB+Kreicas';
+
+    return `
+        <article class="car-card">
+            <a class="car-card__link" href="car.html?slug=${encodeURIComponent(car.slug)}">
+                <div class="car-card__media">
+                    <img src="${cover}" alt="${car.title} nuotrauka" loading="lazy" />
                 </div>
-            </div>
-        </a>
-    </article>
-`;
+                <div class="car-card__body">
+                    <h3 class="car-card__title">${car.title}</h3>
+                    <p class="car-card__price">${formatPrice(car.price)}</p>
+                    <div class="car-card__meta">
+                        <span>${car.year || 'Nenurodyta'} m.</span>
+                        <span>${formatNumber(car.mileage)} km</span>
+                        <span>${car.body || 'Kėbulo tipas nenurodytas'}</span>
+                        <span>${car.fuel || 'Kuro tipas nenurodytas'}</span>
+                        <span>${car.transmission || 'Pavarų dėžė nenurodyta'}</span>
+                    </div>
+                </div>
+            </a>
+        </article>
+    `;
+};
 
 document.addEventListener('DOMContentLoaded', async () => {
     const container = document.getElementById('featuredCars');
