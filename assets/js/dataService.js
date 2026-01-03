@@ -16,7 +16,7 @@
     };
 
     const fetchDefaults = async () => {
-        const response = await fetch('assets/data/cars.json');
+        const response = await fetch(`assets/data/cars.json?nocache=${Date.now()}`);
         if (!response.ok) throw new Error('Nepavyko įkelti automobilių duomenų.');
         return response.json();
     };
