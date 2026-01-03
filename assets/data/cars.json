@@ -405,6 +405,76 @@
     "sdk": "KRTNNHAR",
     "co2": "109 g/km",
     "wheelSize": "R16"
+  },
+  {
+    "id": "peugeot-308-2011", 
+    "slug": "peugeot-308-2011",
+    "title": "Peugeot 308 1.6L", 
+    "price": 2200, 
+    "year": 2011, 
+    "mileage": 262128,
+    "fuel": "Dyzelinas", 
+    "transmission": "Mechaninė",
+    "drivetrain": "Priekiniai", 
+    "power": 82, 
+    "body": "Universalas", 
+    "color": "Pilka/sidabrinė", 
+    "vin": "***********",
+    "description": "",
+    "features": [
+    "Daugiafunkcinis vairas",
+    "Bagažinės uždangalas",
+
+    "El. reguliuojami veidrodėliai",
+    "Automatiškai įsijungiantys žibintai",
+    "Kritulių jutiklis",
+    "Šildomi veidrodėliai",
+    "Pritemstantis veidrodėlis",
+    "Autopilotas",
+
+    "Imobilaizeris",
+
+    "CD grotuvas",
+    "MP3 grotuvas",
+
+    "Žieminių padangų komplektas",
+
+    "Neeksploatuota Lietuvoje",
+    "Parduodama lizingu",
+    "Atsarginis ratas",
+
+    "Traukos kontrolės sistema",
+    "ESP",
+    "ISOFIX tvirtinimo taškai"
+  ],
+    "cover": "assets/images/peo308s/IMG-2f548f535cc324f8a620854460bf36a5-V.jpg",
+    "gallery": [
+    "assets/images/peo308s/IMG-1c0f79f751f40e0abfc8d04ed4069e2e-V.jpg",
+    "assets/images/peo308s/IMG-6ad8a1f12c7e84297b785599bd1466e4-V.jpg",
+    "assets/images/peo308s/IMG-66dd6d65a5939f781566dca94223ecf6-V.jpg",
+    "assets/images/peo308s/IMG-66e6d404d9084a840b070a258c851785-V.jpg",
+    "assets/images/peo308s/IMG-90f020c63dc067d599b97deb42618056-V.jpg",
+    "assets/images/peo308s/IMG-480d7a0af1c7277f1974ee27dcff7f2c-V.jpg",
+    "assets/images/peo308s/IMG-81275e1248e5e76b3e8e71858711c9c1-V.jpg",
+    "assets/images/peo308s/IMG-bddddf0d797b3db301035abb965512f6-V.jpg",
+    "assets/images/peo308s/IMG-ca85fe20092228a04d271e007c766758-V.jpg",
+    "assets/images/peo308s/IMG-ccc14fc388b3b7dab66b1f8954046bd5-V.jpg",
+    "assets/images/peo308s/IMG-fda6f67efef655d741154e3ed89d3af5-V.jpg"
+  ]
+    "make": "Peugeot", 
+    "model": "308", 
+    "firstRegistration": "2011-09", 
+    "engine": "1560 cm³, 111 AG (82 kW)", 
+    "doors": "4/5",
+    "climateControl": "Yra",
+    "steering": "Kairėje",
+    "inspectionUntil": "*", 
+    "weight": "1418", 
+    "seats": "5",
+    "registrationCountry": "Olandija",
+    "sdk": "KRTNNHAR",
+    "co2": "113 g/km", 
+    "wheelSize": "*" 
   }
 ]
 
