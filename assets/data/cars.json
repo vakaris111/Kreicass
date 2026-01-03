@@ -407,48 +407,42 @@
     "wheelSize": "R16"
   },
   {
-    "id": "peugeot-308-2011", 
-    "slug": "peugeot-308-2011",
-    "title": "Peugeot 308 1.6L", 
-    "price": 2200, 
-    "year": 2011, 
-    "mileage": 262128,
-    "fuel": "Dyzelinas", 
-    "transmission": "Mechaninė",
-    "drivetrain": "Priekiniai", 
-    "power": 82, 
-    "body": "Universalas", 
-    "color": "Pilka/sidabrinė", 
-    "vin": "***********",
-    "description": "",
-    "features": [
+  "id": "peugeot-308-2011",
+  "slug": "peugeot-308-2011",
+  "title": "Peugeot 308 1.6L",
+  "price": 2200,
+  "year": 2011,
+  "mileage": 262128,
+  "fuel": "Dyzelinas",
+  "transmission": "Mechaninė",
+  "drivetrain": "Priekiniai",
+  "power": 82,
+  "body": "Universalas",
+  "color": "Pilka/sidabrinė",
+  "vin": "***********",
+  "description": "",
+  "features": [
     "Daugiafunkcinis vairas",
     "Bagažinės uždangalas",
-
     "El. reguliuojami veidrodėliai",
     "Automatiškai įsijungiantys žibintai",
     "Kritulių jutiklis",
     "Šildomi veidrodėliai",
     "Pritemstantis veidrodėlis",
     "Autopilotas",
-
     "Imobilaizeris",
-
     "CD grotuvas",
     "MP3 grotuvas",
-
     "Žieminių padangų komplektas",
-
     "Neeksploatuota Lietuvoje",
     "Parduodama lizingu",
     "Atsarginis ratas",
-
     "Traukos kontrolės sistema",
     "ESP",
     "ISOFIX tvirtinimo taškai"
   ],
-    "cover": "assets/images/peo308s/IMG-2f548f535cc324f8a620854460bf36a5-V.jpg",
-    "gallery": [
+  "cover": "assets/images/peo308s/IMG-2f548f535cc324f8a620854460bf36a5-V.jpg",
+  "gallery": [
     "assets/images/peo308s/IMG-1c0f79f751f40e0abfc8d04ed4069e2e-V.jpg",
     "assets/images/peo308s/IMG-6ad8a1f12c7e84297b785599bd1466e4-V.jpg",
     "assets/images/peo308s/IMG-66dd6d65a5939f781566dca94223ecf6-V.jpg",
@@ -460,21 +454,21 @@
     "assets/images/peo308s/IMG-ca85fe20092228a04d271e007c766758-V.jpg",
     "assets/images/peo308s/IMG-ccc14fc388b3b7dab66b1f8954046bd5-V.jpg",
     "assets/images/peo308s/IMG-fda6f67efef655d741154e3ed89d3af5-V.jpg"
-  ]
-    "make": "Peugeot", 
-    "model": "308", 
-    "firstRegistration": "2011-09", 
-    "engine": "1560 cm³, 111 AG (82 kW)", 
-    "doors": "4/5",
-    "climateControl": "Yra",
-    "steering": "Kairėje",
-    "inspectionUntil": "*", 
-    "weight": "1418", 
-    "seats": "5",
-    "registrationCountry": "Olandija",
-    "sdk": "KRTNNHAR",
-    "co2": "113 g/km", 
-    "wheelSize": "*" 
-  }
+  ],
+  "make": "Peugeot",
+  "model": "308",
+  "firstRegistration": "2011-09",
+  "engine": "1560 cm³, 111 AG (82 kW)",
+  "doors": "4/5",
+  "climateControl": "Yra",
+  "steering": "Kairėje",
+  "inspectionUntil": "*",
+  "weight": "1418",
+  "seats": "5",
+  "registrationCountry": "Olandija",
+  "sdk": "KRTNNHAR",
+  "co2": "113 g/km",
+  "wheelSize": "*"
+}
 ]
 
