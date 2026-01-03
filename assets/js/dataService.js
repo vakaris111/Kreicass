@@ -1,6 +1,6 @@
 (function () {
     const STORAGE_KEY = 'mbk_cars_v2';
-    const STORAGE_VERSION = '2026-01-03';
+    const STORAGE_VERSION = '2024-10-05';
     const LEGACY_KEYS = ['mbk_cars_v1'];
     let cache = null;
     let dataSource = null;
